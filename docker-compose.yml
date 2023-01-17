@@ -1,0 +1,31 @@
+version: "3.10"
+   
+services:
+  db:
+    image: postgres:14
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d app"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=1234
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  pg_data: {}
