@@ -4,34 +4,38 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{% static 'js/myajax.js' %}"></script>
 <script>
+var current_month = "{{current_month}}";
+var current_year = {{current_year}};
+
 $(document).ready(function () {
-	$("#prev").click(function (e) {
+	var prev = function (e) {
 		e.preventDefault();
 		var btn = $(this);
 		$.ajax({
 			url: "{% url 'cal:index'%}",
 			dataType: 'json',
 			data: {
-				"current_month": '{{current_month}}',
-				"current_year": {{current_year}},
+				"current_month": current_month,
+				"current_year": current_year,
 				"nav": "prev",
 				"csrfmiddlewaretoken": '{{ csrf_token }}',
 			},
 			type: 'POST',
 
 			success: function(data) {
-				current_month = data.current_month
-				current_year = data.current_year
-				prev_dates = data.prev_dates
-				now_dates = data.now_dates
-				next_dates = data.next_dates
+				$('#calendar').html(data.html);
+				current_month = data.current_month;
+				current_year = data.current_year;
+				$("#prev").on('click', prev);
+				$("#next").on('click', next);
 			},
 			error: function(er) {
+				console.log(er);
 				alert("ошибка");
 			},
 		});
-	});
-	$("#next").click(function (e) {
+	}
+	var next = function (e) {
 		// Stop form from sending request to server
 		e.preventDefault();
 		var btn = $(this);
@@ -39,50 +43,32 @@ $(document).ready(function () {
 			url: "{% url 'cal:index'%}",
 			dataType: 'json',
 			data: {
-				"current_month": '{{current_month}}',
-				"current_year": {{current_year}},
+				"current_month": current_month,
+				"current_year": current_year,
 				"nav": "next",
 				"csrfmiddlewaretoken": '{{ csrf_token }}',
 			},
 			type: 'POST',
 
 			success: function(data) {
-				
+				$('#calendar').html(data.html);
+				current_month = data.current_month;
+				current_year = data.current_year;
+				$("#prev").on('click', prev);
+				$("#next").on('click', next);
 			},
 			error: function(er) {
+				console.log(er);
 				alert("ошибка");
 			},
 		});
-	});
+	}
+	$("#prev").on('click', prev);
+	$("#next").on('click', next);
 });
 </script>
-<div class="calendar">
-	<div class="calendar_header">
-		<a class="arrow prev" id = 'prev'><</a>
-		<div class="date">{{ current_month }} {{ current_year }}</div>
-		<a class="arrow next" id = 'next'>></a>
-		{% comment %} <input type="text" id="user-input" autofocus=""><br>
-		<button type="button" id="sender">Send data</button><br>
-		<p id="p-text">foo bar</p> {% endcomment %}
-	</div>
-	<div class="calendar__content">
-		<div class="weekday">ПН</div>
-		<div class="weekday">ВТ</div>
-		<div class="weekday">СР</div>
-		<div class="weekday">ЧТ</div>
-		<div class="weekday">ПТ</div>
-		<div class="weekday">СБ</div>
-		<div class="weekday">ВС</div>
-		{% for prev_month_date in prev_dates %}
-			<a class="calendar__cell__second" href="#"> {{prev_month_date}} </a>
-		{% endfor %}
-		{% for now_month_date in now_dates %}
-			<a class="calendar__cell" href="#"> {{now_month_date}} </a>
-		{% endfor %}
-		{% for next_month_date in next_dates %}
-			<a class="calendar__cell__second" href="#"> {{next_month_date}} </a>
-		{% endfor %}
-	</div>
+<div class="calendar" id="calendar">
+	{% include 'cal/calendar.html' %}
 </div>
 {% if latest_event_list %}
 <ul>

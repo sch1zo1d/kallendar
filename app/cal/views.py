@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.http.response import JsonResponse
 from django.views.generic.edit import FormView
@@ -6,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from .forms import RegisterForm, UserAuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-
+from django.template.loader import render_to_string
 from .models import Event
 from .utils import get_month
 from django.contrib.auth.decorators import login_required
@@ -20,7 +21,7 @@ def index(request, year=None, month=None):
     # latest_event_list = Event.objects.order_by('-pub_date')[:5]
     if request.method == "GET":
         prev_dates, now_dates, next_dates, с_month, c_year = get_month()
-    elif request.method == "POST":
+    elif request.method == "POST" and is_ajax(request):
         if request.POST.get('nav') == 'next':
             navigate = 'next'
         elif request.POST.get('nav') == 'prev':
@@ -35,6 +36,7 @@ def index(request, year=None, month=None):
             'current_month': с_month,
             'current_year': c_year,
         }
+        context["html"] = render_to_string('cal/calendar.html', context)
         return JsonResponse(context)
     context = {
         # 'latest_event_list': latest_event_list,
@@ -47,6 +49,15 @@ def index(request, year=None, month=None):
     return render(request, 'cal/index.html', context)
 
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+def update_cal(request):
+    context = {
+
+    }
+    return render(request, 'cal/calendar.html', context)
 # def get_other_month(request):
 #     if request.POST.get('nav') == 'next':
 #         navigate = 'next'
@@ -142,8 +153,6 @@ def remove(request):
     event.delete()
     data = {}
     return JsonResponse(data)
-
-
 
 
 def hello(request):
