@@ -1,0 +1,49 @@
+// compress: true
+@import 'vars';
+
+
+html {
+	font-size: 15px;
+	font-family: 'Poppins', sans-serif;
+	font-family: 'Roboto Slab', serif;
+	color: @color__font;
+}
+
+body {
+	background: no-repeat top @color_background;
+	background-size:cover;
+
+	font-size: 1rem;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+a {
+	outline: none;
+	text-decoration: none;
+}
+
+/* CONTAINER
+---------------------- */
+@import "blocks/container";
+
+
+/* HEADER
+---------------------- */
+@import "blocks/header";
+
+/* SIDEBAR
+---------------------- */
+@import "blocks/sidebar";
+
+
+/* MEDIA
+---------------------- */
+
+@import "blocks/media";
+
+@import "blocks/calendar";

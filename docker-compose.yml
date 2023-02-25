@@ -1,10 +1,8 @@
-version: "3.10"
-   
 services:
   db:
     image: postgres:14
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg_data_:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -15,7 +13,7 @@ services:
     environment:
       - POSTGRES_DB=app
       - POSTGRES_USER=app_user
-      - POSTGRES_PASSWORD=1234
+      - POSTGRES_PASSWORD=uevSMxO't0Mt
 
   web:
     build: .
@@ -26,6 +24,11 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=uevSMxO't0Mt
+
 
 volumes:
-  pg_data: {}
+  pg_data_: {}

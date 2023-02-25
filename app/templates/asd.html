@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="form-container sign-in-container">
+        {% comment %} <form action="{% url 'cal:register' %}" method="post"> {% endcomment %}
+        <form method="post">
+          {% csrf_token %}
+          <h1>Создать аккаунт</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>or use your email for registration</span>
+          <input name="username" type="text" placeholder="Имя пользователя" />
+          <input name="email" type="email" placeholder="Email" />
+          <input name="password1" type="password" placeholder="Пароль" />
+          <input name="password2" type="password" placeholder="Подтвердите пароль" />
+          <button type="submit"  name='submit' value='sign_in' >Зарегистрироваться</button>
+          <div class="form-error">{{ form.errors }}</div>
+        </form>
+      </div>
+      <div class="form-container sign-up-container">
+        <form action="{% url 'login' %}" method="post">
+        <form method="post">
+          {% csrf_token %}
+          <h1>Войти</h1>
+          <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+          {% comment %} <span>or use your account</span> {% endcomment %}
+          {% comment %} <input name="email" type="email" placeholder="Email" /> {% endcomment %}
+          <input name="username" type="username" placeholder="Имя пользователя" />
+          <input name="password" type="password" placeholder="Пароль" />
+          <a href="{% url 'password_reset' %}">Forgot your password?</a>
+		  <button type="submit"  name='submit' value='sign_гз' >Войти</button>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Welcome Back!</h1>
+            <p>
+              To keep connected with us please login with your personal info
+            </p>
+            <button class="ghost" id="signIn">Sign In</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>Hello, Friend!</h1>
+            <p>Enter your personal details and start journey with us</p>
+            <button class="ghost" id="signUp">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/auth.js' %}"></script>
+    {% comment %} <div class="container mt-5 w-50">
+      <form id="signupForm" method="POST">
+        {% csrf_token %} {{ form }}
+        <input
+          type="submit"
+          name="signupSubmit"
+          class="btn btn-success btn-lg"
+        />
+      </form>
+    </div>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // отслеживаем событие отправки формы
+        $("#id_username").keyup(function () {
+          // создаем AJAX-вызов
+          $.ajax({
+            data: $(this).serialize(), // получаяем данные формы
+            url: "{% url 'cal:validate_username' %}",
+            // если успешно, то
+            success: function (response) {
+              if (response.is_taken == true) {
+                $("#id_username")
+                  .removeClass("is-valid")
+                  .addClass("is-invalid");
+                $("#id_username").after(
+                  '<div class="invalid-feedback d-block" id="usernameError">Это имя пользователя недоступно!</div>'
+                );
+              } else {
+                $("#id_username")
+                  .removeClass("is-invalid")
+                  .addClass("is-valid");
+                $("#usernameError").remove();
+              }
+            },
+            // если ошибка, то
+            error: function (response) {
+              // предупредим об ошибке
+              console.log(response.responseJSON.errors);
+            },
+          });
+          return false;
+        });
+      });
+    </script>
+    {% endblock javascript %} {% endcomment %}
+  </body>
+</html>

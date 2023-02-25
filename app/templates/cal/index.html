@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block content %}
+<div class="calendar">
+	<div class="calendar_header">
+		<i class="arrow prev" id = 'left'><</i>
+		<div class="date">{{current_month}} {{ current_year }}</div>
+		<i class="arrow next" id = 'right'>></i>
+		{% comment %} <input type="text" id="user-input" autofocus=""><br>
+		<button type="button" id="sender">Send data</button><br>
+		<p id="p-text">foo bar</p> {% endcomment %}
+	</div>
+	<div class="calendar__content">
+		<div class="weekday">ПН</div>
+		<div class="weekday">ВТ</div>
+		<div class="weekday">СР</div>
+		<div class="weekday">ЧТ</div>
+		<div class="weekday">ПТ</div>
+		<div class="weekday">СБ</div>
+		<div class="weekday">ВС</div>
+		{% for prev_month_date in prev_dates %}
+			<a class="calendar__cell__second" href="#"> {{prev_month_date}} </a>
+		{% endfor %}
+		{% for now_month_date in now_dates %}
+			<a class="calendar__cell" href="#"> {{now_month_date}} </a>
+		{% endfor %}
+		{% for next_month_date in next_dates %}
+			<a class="calendar__cell__second" href="#"> {{next_month_date}} </a>
+		{% endfor %}
+	</div>
+</div>
+{% if latest_event_list %}
+<ul>
+  {% for event in latest_event_list %}
+  <li>
+    <a href="{% url 'cal:detail' event.id %}"
+      >{{ event.pub_date }}, {{ event.notes }}</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No events are available.</p>
+{% endif %}
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="text" name="amount" />
+  <button type="submit">Рассчитать</button>
+</form>
+{% endblock %}

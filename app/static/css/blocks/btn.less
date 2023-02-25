@@ -1,0 +1,30 @@
+// main: ../style.less
+
+.btn-icon {
+	background: none;
+	cursor: pointer;
+	outline: none;
+	align-items: center;
+	background-color: transparent;
+	border: none;
+	border-radius: 50% !important;
+	color: var(--secondary-text-color);
+	display: flex;
+	font-size: 1.5rem;
+	justify-content: center;
+	line-height: 1;
+	padding: 0.5rem;
+	position: relative;
+	text-align: center;
+	transition: color .15s ease-in-out, opacity .15s ease-in-out;
+}
+.animated-menu-icon,
+.animated-menu-icon::before,
+.animated-menu-icon::after {
+	width: 1.125rem;
+	height: 0.125rem;
+	border-radius: 0.125rem;
+	background-color: var(--color-text-secondary);
+	transition: transform .25s;
+	transform: rotate(0);
+}

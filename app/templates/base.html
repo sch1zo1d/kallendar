@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	{% comment %} <link rel="icon" type="image/png" href="{% static 'images/poop__icon.svg' %}" sizes="64x64" /> {% endcomment %}
+	<title>Kallendar</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Slab&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="h1">Привет, {{ request.user }}!</div>
+	{% comment %} <header class="header">
+		<div class="container">
+			<div class="header__inner">
+				<div class="header__inner__left">
+					<div class="hamburger-sidebar">
+						<input id="sidebar__toggle" type="checkbox" />
+						<label class="sidebar__btn" for="sidebar__toggle"><span></span></label>
+						<ul class="sidebar__box">
+							<li><a class="sidebar__item" href="#">Главная</a></li>
+							<li><a class="sidebar__item" href="#">Контакты</a></li>
+							<li><a class="sidebar__item" href="#">Статистика</a></li>
+							<li><a class="sidebar__item" href="#">Темы</a></li>
+							<li><a class="sidebar__item" href="#">Настройки</a></li>
+						</ul>
+					</div>
+					<nav class="header_sidebar">
+					</nav>
+					<img class="header__inner__icon" src="{% static 'images/poop__icon.svg' %}" alt=""></img>
+					<div class="header__inner__name">Kallendar</div>
+				</div>
+				<div class="header__inner__right">
+					<div class="settings">+</div>
+				</div>
+			</div>
+		</div>
+	</header> {% endcomment %}
+	<!-- <div class="container">
+		<div class="calendar">
+			<div class="calendar__date">2023 Февраль</div>
+			<div class="calendar__weekday"></div>
+			<div class="calendar__content">
+			</div>
+		</div>
+	</div> -->
+	<!-- <html ng-app="calendarApp" ng-cloak="true"></html>
+	<% @days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] %>
+	<div class="calendar" ng-controller="calendarController as calendar">
+	<div class="calendar_left">
+		<div class="header">
+		<i class="material-icons" ng-click="calendar.prev()">navigate_before</i>
+		<h1>{{calendar.month}}</h1>
+		<i class="material-icons" ng-click="calendar.next()">navigate_next</i>
+		</div>
+		<div class="days">
+		<% @days.each do |days, index| %>
+			<div class="day_item">#{days}</div>
+		<% end %>
+		</div>
+		<div class="dates"></div>
+	</div>
+	</div> -->
+	<br><div class="container"> 
+    	{% block content %} {% endblock %}
+	</container></br>
+	<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button>
+	<div class="container">
+		<div class="footer">
+
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
