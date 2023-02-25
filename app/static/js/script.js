@@ -80,11 +80,6 @@ next.addEventListener("click", nextMonth);
 
 initCalendar();
 
-
-
-
-
-
 <script>
 $("#prev").click(function () {
 var input = $('#user-input').val();

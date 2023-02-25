@@ -7,14 +7,25 @@ from django.db import models
 
 
 class Event(models.Model):
-    notes = models.TextField(
-        'Textual Notes',
-        blank=True,
-        null=True,
-        default=None)
-    poop = models.BooleanField('Do you poop today?', default=False)
+    tittle = models.CharField(max_length=100,
+                              blank=True,
+                              null=True,
+                              default=None)
+    notes = models.CharField(max_length=1000,
+                             blank=True,
+                             null=True,
+                             default=None)
+    start = models.DateField()
+    end = models.DateField()
+    # poop = models.BooleanField('Do you poop today?', default=False)
     pub_date = models.DateTimeField(
         'date published', auto_now=True)
+
+
+    # def was_added_recently(self):
+    #     return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    def __str__(self):
+        return self.tittle
 
 
 # class UserManager(BaseUserManager):

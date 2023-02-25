@@ -14,24 +14,54 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='accounts/login/')
 def index(request, year=None, month=None):
-    if year == None:
-        prev_dates, now_dates, next_dates, current_month, current_year = get_month()
-    else:
-        prev_dates, now_dates, next_dates, current_month, current_year = get_month(
-            year, month)
-    latest_event_list = Event.objects.order_by('-pub_date')[:5]
-    weekdays = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']
+    # if year == None:
+    # else:
+    # prev_dates, now_dates, next_dates, с_month, c_year = get_month(year, month)
+    # latest_event_list = Event.objects.order_by('-pub_date')[:5]
+    if request.method == "GET":
+        prev_dates, now_dates, next_dates, с_month, c_year = get_month()
+    elif request.method == "POST":
+        if request.POST.get('nav') == 'next':
+            navigate = 'next'
+        elif request.POST.get('nav') == 'prev':
+            navigate = 'prev'
+        prev_dates, now_dates, next_dates, с_month, c_year = get_month(int(
+            request.POST.get('current_year')), request.POST.get('current_month'), navigate)
+        context = {
+            # 'latest_event_list': latest_event_list,
+            'prev_dates': prev_dates,
+            'now_dates': now_dates,
+            'next_dates': next_dates,
+            'current_month': с_month,
+            'current_year': c_year,
+        }
+        return JsonResponse(context)
     context = {
         # 'latest_event_list': latest_event_list,
-        # 'weekdays': weekdays,
-        # 'month_dates': month_dates,
         'prev_dates': prev_dates,
         'now_dates': now_dates,
         'next_dates': next_dates,
-        'current_month': current_month,
-        'current_year': current_year,
+        'current_month': с_month,
+        'current_year': c_year,
     }
     return render(request, 'cal/index.html', context)
+
+
+# def get_other_month(request):
+#     if request.POST.get('nav') == 'next':
+#         navigate = 'next'
+#     elif request.POST.get('nav') == 'prev':
+#         navigate = 'prev'
+#     prev_dates, now_dates, next_dates, с_month, c_year = get_month(int(request.POST.get('current_year')), request.POST.get('current_month'), navigate)
+#     context = {
+#         # 'latest_event_list': latest_event_list,
+#         'prev_dates': prev_dates,
+#         'now_dates': now_dates,
+#         'next_dates': next_dates,
+#         'current_month': с_month,
+#         'current_year': c_year,
+#     }
+#     return JsonResponse(context)
 
 
 def signup(request):
@@ -57,7 +87,7 @@ def signup(request):
                 login(request, user)
                 return redirect("cal:index")
             else:
-                return render(request, 'signup.html', {'err':'Пароли не совпадают'})
+                return render(request, 'signup.html', {'err': 'Пароли не совпадают'})
     return render(request, 'signup.html')
 
 
@@ -70,6 +100,57 @@ def validate_username(request):
     return JsonResponse(response)
 
 
+def all_events(request):
+    all_events = Event.objects.all()
+    out = []
+    for event in all_events:
+        out.append({
+            'title': event.title,
+            'id': event.id,
+            'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),
+            'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"), })
+    return JsonResponse(out, safe=False)
+
+
+def add_event(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    event = Event(title=str(title), start=start, end=end)
+    event.save()
+    data = {}
+    return JsonResponse(data)
+
+
+def update(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    id = request.GET.get("id", None)
+    event = Event.objects.get(id=id)
+    event.start = start
+    event.end = end
+    event.title = title
+    event.save()
+    data = {}
+    return JsonResponse(data)
+
+
+def remove(request):
+    id = request.GET.get("id", None)
+    event = Event.objects.get(id=id)
+    event.delete()
+    data = {}
+    return JsonResponse(data)
+
+
+
+
+def hello(request):
+    context = {
+        'res': request.POST.get("current_year", None)
+    }
+    return JsonResponse(context)
 # class RegisterView(FormView):
 #     form_class = RegisterForm
 #     template_name = 'signup.html'

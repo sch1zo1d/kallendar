@@ -12,6 +12,7 @@ urlpatterns = [
     path('accounts/login/', views.signup, name='signup'),
     path("logout/", LogoutView.as_view(), name="logout"),
     path('validate_username', views.validate_username, name='validate_username'),
+    # path('other_month', views.get_other_month, name="other_month")
     # path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     # path('register', RegisterView.as_view(), name='register'),
     # path('login', UserLoginView.as_view(), name='login'),

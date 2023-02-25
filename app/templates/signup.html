@@ -31,9 +31,9 @@
 		{% comment %} uevSMxO't0Mt {% endcomment %}
 	</form>
 	{% block javascript %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
-      $(document).ready(function () {
+      $("#prev").click(function ()
         // отслеживаем событие отправки формы
         $("#id_username").keyup(function () {
           // создаем AJAX-вызов
