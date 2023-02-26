@@ -3,11 +3,15 @@
 .header {
 	padding: 1.2rem 0;
 	position: fixed;
+	background-color: @color_calendar;
 	width: 100%;
 	z-index: 50;
+	margin-bottom: 1rem;
 	top: 0;
 	left: 0;
 }
+// .header__inner {
+// }
 // .header::before {
 // 	content: '';
 // 	position: absolute;
@@ -35,8 +39,9 @@
 }
 .header__inner__name {
 	font-family: @font-poppins;
-	font-size: 1.5rem;
-	color: @color_dark_brown;
+	font-size: 1.55rem;
+	color: @color__font;
+	text-decoration: none;
 }
 .header__list {
 	display: flex;

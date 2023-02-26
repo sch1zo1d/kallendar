@@ -13,8 +13,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Slab&display=swap" rel="stylesheet">
 </head>
 <body>
-	<div class="h1">Привет, {{ request.user }}!</div>
-	{% comment %} <header class="header">
+	<div class="container">
+	<header class="header">
 		<div class="container">
 			<div class="header__inner">
 				<div class="header__inner__left">
@@ -29,17 +29,17 @@
 							<li><a class="sidebar__item" href="#">Настройки</a></li>
 						</ul>
 					</div>
-					<nav class="header_sidebar">
-					</nav>
-					<img class="header__inner__icon" src="{% static 'images/poop__icon.svg' %}" alt=""></img>
-					<div class="header__inner__name">Kallendar</div>
+					{% comment %} <img class="header__inner__icon noselect" src="{% static 'images/poop__icon.svg' %}" alt=""></img> {% endcomment %}
+					<a href="{% url 'cal:index' %}" class="header__inner__name noselect">Kallendar</a>
 				</div>
 				<div class="header__inner__right">
 					<div class="settings">+</div>
 				</div>
 			</div>
 		</div>
-	</header> {% endcomment %}
+	</header>
+	<div class="content">
+
 	<!-- <div class="container">
 		<div class="calendar">
 			<div class="calendar__date">2023 Февраль</div>
@@ -65,16 +65,17 @@
 		<div class="dates"></div>
 	</div>
 	</div> -->
-	<br><div class="container"> 
-    	{% block content %}
-		{% endblock %}
-	</container></br>
-	<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button>
-	<div class="container">
-		<div class="footer">
+		<div class="container"> 
+			<div>Привет, {{ request.user }}!</div></br>
+			{% block content %}
+			{% endblock %}
+		</container></br>
+		<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button>
+		<div class="container">
+	<div class="footer">
 
-		</div>
 	</div>
-
+	</div>
+	</div>
 </body>
 </html>
