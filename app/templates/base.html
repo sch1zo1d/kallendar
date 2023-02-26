@@ -13,7 +13,6 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Slab&display=swap" rel="stylesheet">
 </head>
 <body>
-	<div class="container">
 	<header class="header">
 		<div class="container">
 			<div class="header__inner">
@@ -29,18 +28,28 @@
 							<li><a class="sidebar__item" href="#">Настройки</a></li>
 						</ul>
 					</div>
-					{% comment %} <img class="header__inner__icon noselect" src="{% static 'images/poop__icon.svg' %}" alt=""></img> {% endcomment %}
-					<a href="{% url 'cal:index' %}" class="header__inner__name noselect">Kallendar</a>
+					<a href="{% url 'cal:index' %}" class="header__inner__name noselect"> kallendar</a>
 				</div>
 				<div class="header__inner__right">
-					<div class="settings">+</div>
+					<img class="header__inner__icon noselect" src="{% static 'images/1.svg' %}" alt=""></img>
+					{% comment %} <div class="settings">+</div>
+					<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button> {% endcomment %}
 				</div>
 			</div>
 		</div>
 	</header>
-	<div class="content">
 
-	<!-- <div class="container">
+	<div class="container">
+		<div class="content">
+			{% block content %}
+			{% endblock %}
+		</div>
+	</div>
+	<div class="footer"></div>
+</body>
+</html>
+
+<!-- <div class="container">
 		<div class="calendar">
 			<div class="calendar__date">2023 Февраль</div>
 			<div class="calendar__weekday"></div>
@@ -65,17 +74,3 @@
 		<div class="dates"></div>
 	</div>
 	</div> -->
-		<div class="container"> 
-			<div>Привет, {{ request.user }}!</div></br>
-			{% block content %}
-			{% endblock %}
-		</container></br>
-		<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button>
-		<div class="container">
-	<div class="footer">
-
-	</div>
-	</div>
-	</div>
-</body>
-</html>

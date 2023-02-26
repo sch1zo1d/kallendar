@@ -9,6 +9,7 @@ app_name = 'cal'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('events', views.index, name='events'),
     path('accounts/login/', views.signup, name='signup'),
     path("logout/", LogoutView.as_view(), name="logout"),
     path('validate_username', views.validate_username, name='validate_username'),

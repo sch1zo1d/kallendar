@@ -3,9 +3,26 @@
 #sidebar__toggle {
 	opacity: 0;
 }
+.sidebar__toggle {
+	    position: absolute;
+	    display: block;
+	    height: 32px;
+	    width: 32px;
+	    top: 20px;
+	    left: 20px;
+	    z-index: 5;
+	    opacity: 0;
+	    cursor: pointer;
+}
+
+// transform: rotate(45deg) translate(-2px, -1px);
+
+
 
 #sidebar__toggle:checked+.sidebar__btn>span {
-	transform: rotate(45deg);
+	// transform: rotate(45deg);
+	transform: rotate(0deg);
+	transition: transform 0.3s ease;
 }
 
 #sidebar__toggle:checked+.sidebar__btn>span::before {
@@ -15,35 +32,48 @@
 
 #sidebar__toggle:checked+.sidebar__btn>span::after {
 	top: 0;
-	transform: rotate(90deg);
+	transform: rotate(0deg);
 }
 
 #sidebar__toggle:checked~.sidebar__box {
 	left: 0 !important;
 }
 .hamburger-sidebar {
-	padding: 0 1rem 0 1rem;
+	display: none;
+	width: 50px;
+	height: 30px;
+	justify-content: left;
+	align-items: center;
+	// padding: 0 1rem 0 1rem;
+	// margin-left: 1rem;
 }
 .sidebar__btn {
-	position: fixed;
-	top: 20px;
-	left: 20px;
-	width: 26px;
+	position: absolute;
+	width: 23px;
 	height: 26px;
 	cursor: pointer;
-	margin-top: 13px;
+	padding-top: 15px;
+	margin-top: 0.23rem;
 	z-index: 1;
 }
-
+.sidebar__btn:hover {
+	span,
+	span::after,
+	span::before {
+		background-color: @color_font_second;
+	}
+}
 .sidebar__btn>span,
 .sidebar__btn>span::before,
 .sidebar__btn>span::after {
 	display: block;
+	box-sizing: border-box;
 	position: absolute;
 	width: 100%;
-	height: 2px;
+	height: 3px;
 	background-color: #616161;
 	transition-duration: .25s;
+	border-radius: 4px;
 }
 
 .sidebar__btn>span::before {
@@ -61,12 +91,12 @@
 	position: fixed;
 	top: 0;
 	left: -100%;
-	width: 275px;
+	width: 60%;
 	height: 100%;
 	margin: 0;
 	padding: 80px 0;
 	list-style: none;
-	background-color: @color_dark_brown;
+	background-color: @color_font_main;
 	// box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
 	transition-duration: .3s;
 }
@@ -74,18 +104,21 @@
 .sidebar__item {
 	display: block;
 	padding: 12px 24px;
-	color: @color_background;
-	font-family: @font_roboto;
-	font-size: 20px;
+	color: @color__font__second;
+	font-size: 15px;
 	font-weight: 600;
 	text-decoration: none;
 	transition-duration: .25s;
 }
 
 .sidebar__item:hover {
-	background-color: @color_dark_brown;
+	background-color: @color_font_second;
 }
-
+@media (max-width: 767px) {
+	.hamburger-sidebar {
+		display: flex;
+	}
+}
 // .sidebar__header {
 
 // }

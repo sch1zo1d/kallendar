@@ -6,7 +6,8 @@
 <script>
 var current_month = "{{current_month}}";
 var current_year = {{current_year}};
-
+//var current_day = {{current_day}}
+// AJAX CALENDAR
 $(document).ready(function () {
 	var prev = function (e) {
 		e.preventDefault();
@@ -17,6 +18,7 @@ $(document).ready(function () {
 			data: {
 				"current_month": current_month,
 				"current_year": current_year,
+				//"current_day": current_day,
 				"nav": "prev",
 				"csrfmiddlewaretoken": '{{ csrf_token }}',
 			},
@@ -26,12 +28,11 @@ $(document).ready(function () {
 				$('#calendar').html(data.html);
 				current_month = data.current_month;
 				current_year = data.current_year;
-				$("#prev").on('click', prev);
-				$("#next").on('click', next);
+				$(".prev").on('click', prev);
+				$(".next").on('click', next);
 			},
 			error: function(er) {
 				console.log(er);
-				alert("ошибка");
 			},
 		});
 	}
@@ -45,6 +46,7 @@ $(document).ready(function () {
 			data: {
 				"current_month": current_month,
 				"current_year": current_year,
+				//"current_day": current_day,
 				"nav": "next",
 				"csrfmiddlewaretoken": '{{ csrf_token }}',
 			},
@@ -54,23 +56,57 @@ $(document).ready(function () {
 				$('#calendar').html(data.html);
 				current_month = data.current_month;
 				current_year = data.current_year;
-				$("#prev").on('click', prev);
-				$("#next").on('click', next);
+				$(".prev").on('click', prev);
+				$(".next").on('click', next);
+				$(".add").on('click', next);
 			},
 			error: function(er) {
 				console.log(er);
-				alert("ошибка");
 			},
 		});
 	}
-	$("#prev").on('click', prev);
-	$("#next").on('click', next);
+// AJAX EVENTS
+	var add = function (e) {
+		// Stop form from sending request to server
+		e.preventDefault();
+		var btn = $(this);
+		$.ajax({
+			url: "{% url 'cal:events'%}",
+			dataType: 'json',
+			data: $(this).serialize(),
+			type: 'POST',
+
+			success: function(data) {
+				$('#events').html(data.html);
+				current_month = data.current_month;
+				current_year = data.current_year;
+				$(".prev").on('click', prev);
+				$(".next").on('click', next);
+				$(".add").on('submit', next);
+
+			},
+			error: function(er) {
+				console.log(er);
+			},
+		});
+	}
+	$(".prev").on('click', prev);
+	$(".next").on('click', next);
+	$(".add").on('click', add);
+	//$(".next").on('click', next);
 });
 </script>
-<div class="calendar" id="calendar">
-	{% include 'cal/calendar.html' %}
+<div class="hello">Привет, {{ request.user }}!</div></br>
+<div class="cal_container">
+	<div class="calendar" id="calendar">
+		{% include 'cal/calendar.html' %}
+	</div>
+	<div class="events" id="events">
+		{% include 'cal/events.html' %}
+	</div>
 </div>
-{% if latest_event_list %}
+
+{% comment %} {% if latest_event_list %}
 <ul>
   {% for event in latest_event_list %}
   <li>
@@ -87,7 +123,7 @@ $(document).ready(function () {
   {% csrf_token %}
   <input type="text" name="amount" />
   <button type="submit">Рассчитать</button>
-</form>
+</form> {% endcomment %}
 
 {% comment %} <script>
 $(document).ready(function () {

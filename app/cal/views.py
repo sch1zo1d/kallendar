@@ -20,13 +20,13 @@ def index(request, year=None, month=None):
     # prev_dates, now_dates, next_dates, с_month, c_year = get_month(year, month)
     # latest_event_list = Event.objects.order_by('-pub_date')[:5]
     if request.method == "GET":
-        prev_dates, now_dates, next_dates, с_month, c_year = get_month()
+        prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month()
     elif request.method == "POST" and is_ajax(request):
         if request.POST.get('nav') == 'next':
             navigate = 'next'
         elif request.POST.get('nav') == 'prev':
             navigate = 'prev'
-        prev_dates, now_dates, next_dates, с_month, c_year = get_month(int(
+        prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month(int(
             request.POST.get('current_year')), request.POST.get('current_month'), navigate)
         context = {
             # 'latest_event_list': latest_event_list,
@@ -35,6 +35,9 @@ def index(request, year=None, month=None):
             'next_dates': next_dates,
             'current_month': с_month,
             'current_year': c_year,
+            'now_day': now_day,
+            'now_month': now_month,
+            'now_year': now_year,
         }
         context["html"] = render_to_string('cal/calendar.html', context)
         return JsonResponse(context)
@@ -45,6 +48,9 @@ def index(request, year=None, month=None):
         'next_dates': next_dates,
         'current_month': с_month,
         'current_year': c_year,
+        'now_day': now_day,
+        'now_month': now_month,
+        'now_year': now_year,
     }
     return render(request, 'cal/index.html', context)
 

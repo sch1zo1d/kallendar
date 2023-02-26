@@ -1,0 +1,8 @@
+<div class="events_container">EVENTS</div>
+<form id="form">
+	<input type="text" name="tittle" placeholder="Название задачи">
+	<input type="text" name="description" placeholder="Описание">
+	<input type="date" name="date">
+	<input type="hidden" name="csrfmiddlewaretoken" value='{{ csrf_token }}'>
+	<a class="add" type="submit" name="send">send</a>
+</form>

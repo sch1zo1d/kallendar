@@ -43,4 +43,5 @@ def get_month(year=now.year, month=now.month, navigate=None):
     now_dates = [i for i in range(1, days_in_now+1)]
     next_dates = [i for i in range(
         1, 1 + len(range((len(prev_dates)+len(now_dates)), 42)))]
-    return prev_dates, now_dates, next_dates, c_month, c_year
+    now_month = month_names[month_indexes.index(now.month)]
+    return prev_dates, now_dates, next_dates, c_month, c_year, now.day, now_month, now.year
