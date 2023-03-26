@@ -22,9 +22,19 @@ def index(request, year=None, month=None):
     if request.method == "GET":
         prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month()
     elif request.method == "POST" and is_ajax(request):
-        if request.POST.get('nav') == 'next':
+        navigate_req = request.POST.get('nav')
+        # return JsonResponse(request.POST)
+        print(navigate_req, request.POST)
+        if navigate_req == 'add':
+            context = {
+                'tittle': request.POST.get('tittle'),
+                'description': request.POST.get('description'),
+                'date': request.POST.get('date'),
+            }
+            return JsonResponse(context)
+        elif navigate_req == 'next':
             navigate = 'next'
-        elif request.POST.get('nav') == 'prev':
+        elif navigate_req == 'prev':
             navigate = 'prev'
         prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month(int(
             request.POST.get('current_year')), request.POST.get('current_month'), navigate)
