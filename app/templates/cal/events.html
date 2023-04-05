@@ -1,17 +1,32 @@
-<div class="events_container">EVENTS</div>
-{% comment %}
-<form class="add_form">
-  <input type="text" name="tittle" placeholder="Название задачи" />
-  <input type="text" name="description" placeholder="Описание" />
-  <input type="date" name="date" />
-  <input type="hidden" name="nav" value="add" />
-  <a class="add" type="submit" name="send">send</a>
-</form>
-{% endcomment %}
+{% if click_date %}
+  <div class="events_container">СОБЫТИЯ НА {{click_date}}</div>
+{% else %}
+  <div class="events_container">СЕГОДНЯШНИЕ СОБЫТИЯ</div>
+{% endif %}
 <form id="add_form">
   <input type="text" name="tittle" placeholder="Название задачи" />
-  <input type="text" name="description" placeholder="Описание" />
+  <input type="text" name="notes" placeholder="Описание" />
   <input type="date" name="date" />
   <input type="hidden" name="nav" value="add" />
   <input type="submit" />
 </form>
+{% comment %} {% if today_events_list %}
+    {% for event in today_events_list %}
+        <li><div>{{ event.pub_date }}</div></li>
+    {% endfor %}
+{% else %}
+    <p>No events are available.</p>
+{% endif %} {% endcomment %}
+{% if today_events_list %}
+  <ul>
+    {% for event in today_events_list %}
+        <li><div>{{ event.tittle }}</div> 
+        <div>{{ event.notes }}</div>
+        <div>{{ event.pub_date }}</div></li>
+        <a href="{% url 'cal:delete_event' event.id%}" id='delete'>Удалить</a>
+        <a href="{% url 'cal:edit_event' event.id%}">Редактировать</a>
+    {% endfor %}
+  </ul>
+{% else %}
+    <p>Добавьте события!</p>
+{% endif %}

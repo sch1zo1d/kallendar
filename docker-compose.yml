@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:14
     volumes:
-      - pg_data_:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -31,4 +31,4 @@ services:
 
 
 volumes:
-  pg_data_: {}
+  pg_data: {}

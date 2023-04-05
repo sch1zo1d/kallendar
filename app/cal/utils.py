@@ -4,6 +4,7 @@ from datetime import datetime
 now = datetime.now()
 
 
+
 def weekday(year: int, month: int, day: int) -> int:
 	if month < 3:
 		year -= 1
@@ -13,6 +14,7 @@ def weekday(year: int, month: int, day: int) -> int:
 	return (day + 31 * month // 12 + year + year // 4 - year // 100 + year // 400) % 7
 
 def get_month(year=now.year, month=now.month, navigate=None):
+    # ru_to_eng_months = {'Jan': 'январь', }
     month_names = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
                    'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
     month_indexes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]

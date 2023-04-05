@@ -15,17 +15,23 @@ class Event(models.Model):
                              blank=True,
                              null=True,
                              default=None)
-    start = models.DateField()
-    end = models.DateField()
+    date = models.DateField()
     # poop = models.BooleanField('Do you poop today?', default=False)
     pub_date = models.DateTimeField(
         'date published', auto_now=True)
-
-
     # def was_added_recently(self):
     #     return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
     def __str__(self):
         return self.tittle
+
+# class SpecialEvent(models.Model):
+#     date = models.DateField()
+#     # poop = models.BooleanField('Do you poop today?', default=False)
+#     pub_date = models.DateTimeField(
+#         'date published', auto_now=True)
+#     def __str__(self):
+#         return self.date
 
 
 # class UserManager(BaseUserManager):

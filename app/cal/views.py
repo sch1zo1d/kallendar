@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http.response import JsonResponse
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
@@ -19,19 +19,27 @@ def index(request, year=None, month=None):
     # else:
     # prev_dates, now_dates, next_dates, с_month, c_year = get_month(year, month)
     # latest_event_list = Event.objects.order_by('-pub_date')[:5]
+    today_events_list = Event.objects.order_by('-pub_date')
+    # output = ', '.join([e.tittle for e in today_events_list])
     if request.method == "GET":
         prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month()
     elif request.method == "POST" and is_ajax(request):
         navigate_req = request.POST.get('nav')
         # return JsonResponse(request.POST)
-        print(navigate_req, request.POST)
         if navigate_req == 'add':
             context = {
                 'tittle': request.POST.get('tittle'),
-                'description': request.POST.get('description'),
+                'notes': request.POST.get('notes'),
                 'date': request.POST.get('date'),
             }
+            tom = Event(tittle=context.get('tittle'), notes=context.get('notes'), date=context.get('date'))
+            tom.save()
+            context['today_events_list'] = Event.objects.order_by('-pub_date')
+            context["html"] = render_to_string('cal/events.html', context)
+            context.pop('today_events_list')
             return JsonResponse(context)
+
+
         elif navigate_req == 'next':
             navigate = 'next'
         elif navigate_req == 'prev':
@@ -61,6 +69,7 @@ def index(request, year=None, month=None):
         'now_day': now_day,
         'now_month': now_month,
         'now_year': now_year,
+        'today_events_list': today_events_list,
     }
     return render(request, 'cal/index.html', context)
 
@@ -68,6 +77,14 @@ def index(request, year=None, month=None):
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+
+def delete_event(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    event.delete()
+    return redirect('/')
+
+def edit_event(request, event_id):
+    pass
 
 def update_cal(request):
     context = {

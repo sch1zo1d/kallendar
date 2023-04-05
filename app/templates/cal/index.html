@@ -99,21 +99,40 @@ $(document).ready(function () {
 			type: 'POST',
 			success: function(data) {
 				$('#events').html(data.html);
-				current_month = data.current_month;
-				current_year = data.current_year;
+				document.querySelector('form').reset()
 				$(".prev").on('click', prev);
 				$(".next").on('click', next);
 				$(".add").on('submit', add);
-
 			},
 			error: function(er) {
 				console.log(er);
 			},
 		});
 	}
+	
+	//var del = function (e) {
+		// Stop form from sending request to server
+		//e.preventDefault();
+		//var btn = $(this);
+		//$.ajax({
+		//	url: "{% url 'cal:index'%}",
+		//	dataType: 'json',
+		//	data: document.getElementById('test').value
+		//	type: 'POST',
+		//	success: function(data) {
+	//			$(".prev").on('click', prev);
+	//			$(".next").on('click', next);
+	//			$(".add").on('submit', add);
+	//		},
+	//		error: function(er) {
+	//			console.log(er);
+	//		},
+	//	});
+//	}
 	$(".prev").on('click', prev);
 	$(".next").on('click', next);
 	$("#add_form").on('submit', add);
+	//$("#delete").on('click', del);
 	//$(".next").on('click', next);
 });
 </script>
