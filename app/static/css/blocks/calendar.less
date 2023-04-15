@@ -3,7 +3,7 @@
 .calendar {
 	position: relative;
 	height: 100%;
-	width: 100%;
+	// width: 100%;
 	max-width:fit-content;
 	// display: flex;
 	// align-items: center;
@@ -14,16 +14,20 @@
 	grid-template-columns: repeat(1, 1fr);
 }
 .cal_container {
-	
+	flex-wrap: wrap;
 	display: flex;
-	justify-content: space-around;
-	// align-items: center;
+	justify-content: space-evenly;
+	align-items: center;
+
 }
 .arrow {
 	cursor: pointer;
 	color: @color__font;
 	text-decoration: none;
 	outline: none;
+}
+.arrow:hover {
+	transition: 0.25s;
 }
 .calendar__content {
 	display: inline-grid;

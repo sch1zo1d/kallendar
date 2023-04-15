@@ -52,7 +52,6 @@ $(document).ready(function () {
 				current_year = data.current_year;
 				$(".prev").on('click', prev);
 				$(".next").on('click', next);
-				$(".add").on('click', add);
 			},
 			error: function(er) {
 				console.log(er);
@@ -80,7 +79,6 @@ $(document).ready(function () {
 				current_year = data.current_year;
 				$(".prev").on('click', prev);
 				$(".next").on('click', next);
-				$(".add").on('click', add);
 			},
 			error: function(er) {
 				console.log(er);
@@ -93,16 +91,15 @@ $(document).ready(function () {
 		e.preventDefault();
 		var btn = $(this);
 		$.ajax({
-			url: "{% url 'cal:index'%}",
+			url: "{% url 'cal:add_event'%}",
 			dataType: 'json',
 			data: $('#add_form').serialize(),
 			type: 'POST',
 			success: function(data) {
 				$('#events').html(data.html);
-				document.querySelector('form').reset()
-				$(".prev").on('click', prev);
-				$(".next").on('click', next);
-				$(".add").on('submit', add);
+				document.querySelector('#add_form').reset()
+				$("#add_form").on('submit', add);
+				$("#delete_event").on('click', del);
 			},
 			error: function(er) {
 				console.log(er);
@@ -110,30 +107,44 @@ $(document).ready(function () {
 		});
 	}
 	
-	//var del = function (e) {
+	var del = function (e) {
 		// Stop form from sending request to server
-		//e.preventDefault();
-		//var btn = $(this);
-		//$.ajax({
-		//	url: "{% url 'cal:index'%}",
-		//	dataType: 'json',
-		//	data: document.getElementById('test').value
-		//	type: 'POST',
-		//	success: function(data) {
-	//			$(".prev").on('click', prev);
-	//			$(".next").on('click', next);
-	//			$(".add").on('submit', add);
-	//		},
-	//		error: function(er) {
-	//			console.log(er);
-	//		},
-	//	});
-//	}
+		e.preventDefault();
+		var btn = $(this);
+		$.ajax({
+			url: "{% url 'cal:delete_event'%}",
+			dataType: 'json',
+			data: {'id':$("#delete_event").attr('value')},
+			type: 'POST',
+			success: function(data) {
+				$('#events').html(data.html);
+				$("#add_form").on('submit', add);
+				$("#delete_event").on('click', del);
+			},
+			error: function(er) {
+				console.log(er);
+			},
+		});
+	}
+	
 	$(".prev").on('click', prev);
 	$(".next").on('click', next);
 	$("#add_form").on('submit', add);
-	//$("#delete").on('click', del);
+	$("#delete_event").on('click', del);
 	//$(".next").on('click', next);
+
+
+	//const toggle = document.querySelector("#sidebar__toggle");
+	//if (toggle.checked == true) {
+	//	if (e.target.className != "sidebar__box") {
+	//		popup.checked = false;
+	//	};
+	//};
+	//document.onclick = function (e) {
+	//	if (e.target.className != "sidebar__box") {
+	//		popup.checked = 'false';
+	//	};
+	//};
 });
 </script>
 <div class="hello">Привет, {{ request.user }}!</div></br>

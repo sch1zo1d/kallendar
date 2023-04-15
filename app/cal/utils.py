@@ -4,17 +4,16 @@ from datetime import datetime
 now = datetime.now()
 
 
-
 def weekday(year: int, month: int, day: int) -> int:
-	if month < 3:
-		year -= 1
-		month += 10
-	else:
-		month -= 2
-	return (day + 31 * month // 12 + year + year // 4 - year // 100 + year // 400) % 7
+    if month < 3:
+        year -= 1
+        month += 10
+    else:
+        month -= 2
+    return (day + 31 * month // 12 + year + year // 4 - year // 100 + year // 400) % 7
+
 
 def get_month(year=now.year, month=now.month, navigate=None):
-    # ru_to_eng_months = {'Jan': 'январь', }
     month_names = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
                    'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
     month_indexes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -42,7 +41,7 @@ def get_month(year=now.year, month=now.month, navigate=None):
     days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     days_in_now = days_in_month[c_month_index]
     days_in_prev = days_in_month[c_month_index-1]
-    if c_year % 4 == 0 and c_year % 100 != 0 or c_year % 400 == 0:
+    if (c_year % 4 == 0 and c_year % 100 != 0) or c_year % 400 == 0:
         if days_in_now == 28:
             days_in_now = 29
         elif days_in_prev == 28:
@@ -53,4 +52,13 @@ def get_month(year=now.year, month=now.month, navigate=None):
     next_dates = [i for i in range(
         1, 1 + len(range((len(prev_dates)+len(now_dates)), 42)))]
     now_month = month_names[month_indexes.index(now.month)]
-    return prev_dates, now_dates, next_dates, c_month, c_year, now.day, now_month, now.year
+    return {
+        'prev_dates': prev_dates,
+        'now_dates': now_dates,
+        'next_dates': next_dates,
+        'current_month': c_month,
+        'current_year': c_year,
+        'now_day': now.day,
+        'now_month': now_month,
+        'now_year': now.year,
+    }

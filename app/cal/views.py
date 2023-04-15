@@ -13,99 +13,53 @@ from .utils import get_month
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url='accounts/login/')
-def index(request, year=None, month=None):
-    # if year == None:
-    # else:
-    # prev_dates, now_dates, next_dates, с_month, c_year = get_month(year, month)
-    # latest_event_list = Event.objects.order_by('-pub_date')[:5]
-    today_events_list = Event.objects.order_by('-pub_date')
-    # output = ', '.join([e.tittle for e in today_events_list])
-    if request.method == "GET":
-        prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month()
-    elif request.method == "POST" and is_ajax(request):
-        navigate_req = request.POST.get('nav')
-        # return JsonResponse(request.POST)
-        if navigate_req == 'add':
-            context = {
-                'tittle': request.POST.get('tittle'),
-                'notes': request.POST.get('notes'),
-                'date': request.POST.get('date'),
-            }
-            tom = Event(tittle=context.get('tittle'), notes=context.get('notes'), date=context.get('date'))
-            tom.save()
-            context['today_events_list'] = Event.objects.order_by('-pub_date')
-            context["html"] = render_to_string('cal/events.html', context)
-            context.pop('today_events_list')
-            return JsonResponse(context)
-
-
-        elif navigate_req == 'next':
-            navigate = 'next'
-        elif navigate_req == 'prev':
-            navigate = 'prev'
-        prev_dates, now_dates, next_dates, с_month, c_year, now_day, now_month, now_year = get_month(int(
-            request.POST.get('current_year')), request.POST.get('current_month'), navigate)
-        context = {
-            # 'latest_event_list': latest_event_list,
-            'prev_dates': prev_dates,
-            'now_dates': now_dates,
-            'next_dates': next_dates,
-            'current_month': с_month,
-            'current_year': c_year,
-            'now_day': now_day,
-            'now_month': now_month,
-            'now_year': now_year,
-        }
-        context["html"] = render_to_string('cal/calendar.html', context)
-        return JsonResponse(context)
-    context = {
-        # 'latest_event_list': latest_event_list,
-        'prev_dates': prev_dates,
-        'now_dates': now_dates,
-        'next_dates': next_dates,
-        'current_month': с_month,
-        'current_year': c_year,
-        'now_day': now_day,
-        'now_month': now_month,
-        'now_year': now_year,
-        'today_events_list': today_events_list,
-    }
-    return render(request, 'cal/index.html', context)
-
-
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-def delete_event(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
+def event_render_to_str(context):
+    context['today_events_list'] = Event.objects.order_by('-pub_date')
+    context["html"] = render_to_string('cal/events.html', context)
+    context.pop('today_events_list')
+    return context
+
+
+@login_required(login_url='accounts/login/')
+def index(request, year=None, month=None):
+    if request.method == "POST" and is_ajax(request):
+        context = get_month(int(request.POST.get('current_year')), request.POST.get(
+            'current_month'), request.POST.get('nav'))
+        context["html"] = render_to_string('cal/calendar.html', context)
+        return JsonResponse(context)
+    context = get_month()
+    context['today_events_list'] = Event.objects.order_by('-pub_date')
+    return render(request, 'cal/index.html', context)
+
+
+def delete_event(request):
+    event = get_object_or_404(Event, pk=request.POST.get('id'))
     event.delete()
-    return redirect('/')
+    return JsonResponse(event_render_to_str({}))
+
+
+def today_events(request):
+    event = get_object_or_404(Event, pk=request.POST.get('date'))
+
+
+def add_event(request):
+    context = {
+        'tittle': request.POST.get('tittle'),
+        'notes': request.POST.get('notes'),
+        'date': request.POST.get('date'),
+    }
+    tom = Event(tittle=context.get('tittle'), notes=context.get(
+        'notes'), date=context.get('date'))
+    tom.save()
+    return JsonResponse(event_render_to_str(context))
+
 
 def edit_event(request, event_id):
     pass
-
-def update_cal(request):
-    context = {
-
-    }
-    return render(request, 'cal/calendar.html', context)
-# def get_other_month(request):
-#     if request.POST.get('nav') == 'next':
-#         navigate = 'next'
-#     elif request.POST.get('nav') == 'prev':
-#         navigate = 'prev'
-#     prev_dates, now_dates, next_dates, с_month, c_year = get_month(int(request.POST.get('current_year')), request.POST.get('current_month'), navigate)
-#     context = {
-#         # 'latest_event_list': latest_event_list,
-#         'prev_dates': prev_dates,
-#         'now_dates': now_dates,
-#         'next_dates': next_dates,
-#         'current_month': с_month,
-#         'current_year': c_year,
-#     }
-#     return JsonResponse(context)
 
 
 def signup(request):
@@ -156,14 +110,14 @@ def all_events(request):
     return JsonResponse(out, safe=False)
 
 
-def add_event(request):
-    start = request.GET.get("start", None)
-    end = request.GET.get("end", None)
-    title = request.GET.get("title", None)
-    event = Event(title=str(title), start=start, end=end)
-    event.save()
-    data = {}
-    return JsonResponse(data)
+# def add_event(request):
+#     start = request.GET.get("start", None)
+#     end = request.GET.get("end", None)
+#     title = request.GET.get("title", None)
+#     event = Event(title=str(title), start=start, end=end)
+#     event.save()
+#     data = {}
+#     return JsonResponse(data)
 
 
 def update(request):
