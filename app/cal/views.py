@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http.response import JsonResponse
@@ -42,18 +43,32 @@ def delete_event(request):
     return JsonResponse(event_render_to_str({}))
 
 
-def today_events(request):
-    event = get_object_or_404(Event, pk=request.POST.get('date'))
-
+def all_events(request):
+    return JsonResponse(event_render_to_str({}))
+def today_event(request):
+    month_names = {'январь': '1', 'февраль': '2', 'март': '3', 'апрель': '4', 'май': '5', 'июнь': '6',
+                   'июль': '7', 'август': '8', 'сентябрь': '9', 'октябрь': '10', 'ноябрь': '11', 'декабрь': '12'}
+    date_str = '-'.join([request.POST.get('current_year'),
+                        month_names[request.POST.get('current_month')], request.POST.get('current_day')])
+    date = datetime.strptime(date_str, '%Y-%m-%d')
+    e = Event.objects.filter(date=date).order_by('-pub_date')
+    context = {'today_events_list':Event.objects.filter(date=date).order_by('-pub_date'), 'current_date':date}
+    context["html"] = render_to_string('cal/events.html', context)
+    context.pop('today_events_list')
+    return JsonResponse(context)
+    # return JsonResponse(event_render_to_str({}, get_list_or_404(Event, date=request.POST.get('date'))))
 
 def add_event(request):
     context = {
         'tittle': request.POST.get('tittle'),
         'notes': request.POST.get('notes'),
         'date': request.POST.get('date'),
+        'time': request.POST.get('time'),
     }
+    if not context.get('time'):
+        context['time'] = None
     tom = Event(tittle=context.get('tittle'), notes=context.get(
-        'notes'), date=context.get('date'))
+        'notes'), date=context.get('date'), time=context.get('time'))
     tom.save()
     return JsonResponse(event_render_to_str(context))
 
@@ -98,16 +113,16 @@ def validate_username(request):
     return JsonResponse(response)
 
 
-def all_events(request):
-    all_events = Event.objects.all()
-    out = []
-    for event in all_events:
-        out.append({
-            'title': event.title,
-            'id': event.id,
-            'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),
-            'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"), })
-    return JsonResponse(out, safe=False)
+# def all_events(request):
+#     all_events = Event.objects.all()
+#     out = []
+#     for event in all_events:
+#         out.append({
+#             'title': event.title,
+#             'id': event.id,
+#             'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),
+#             'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"), })
+#     return JsonResponse(out, safe=False)
 
 
 # def add_event(request):

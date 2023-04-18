@@ -16,6 +16,8 @@ class Event(models.Model):
                              null=True,
                              default=None)
     date = models.DateField()
+    time = models.TimeField(null=True)
+
     # poop = models.BooleanField('Do you poop today?', default=False)
     pub_date = models.DateTimeField(
         'date published', auto_now=True)

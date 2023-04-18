@@ -1,14 +1,16 @@
 {% load static %}
-{% if click_date %}
-  <div class="events_container">СОБЫТИЯ НА {{click_date}}</div>
+{% if current_date %}
+  <a class="all_events">prev</a>
+  <div class="events_container">СОБЫТИЯ НА {{current_date | date:"d-m-Y"}}</div>
 {% else %}
-  <div class="events_container">СЕГОДНЯШНИЕ СОБЫТИЯ</div>
+  <div class="events_container">ВСЕ СОБЫТИЯ</div>
 {% endif %}
 <form id="add_form">
   <input class='form_input' type="text" name="tittle" placeholder="Название задачи" />
   <datalist></datalist>
   <input class='form_input' type="text" name="notes" placeholder="Описание" />
   <input class='form_input' type="date" name="date" />
+  <input class='form_input' type="time" name="time" />
   <input type="hidden" name="nav" value="add" />
   {% comment %} <img type='submit' class="buttons" src="{% static 'images/add.svg' %}" alt="Добавить"></img> {% endcomment %}
   <input type="submit" />
@@ -26,8 +28,15 @@
     <div id="{{event.id}}">
         <div>{{ event.tittle }}</div> 
         <div>{{ event.notes }}</div>
-        <div>{{ event.pub_date }}</div></li>
-        <img id='delete_event' class="buttons" value="{{event.id}}" src="{% static 'images/delete.svg' %}" alt="Удалить"></img>
+        {% if not current_date %}
+          <div>{{ event.date | date:"d-m-Y" }}</div>
+        {% endif %}
+        {% if event.time %}
+          <div >{{ event.time | time:"H:i"}}</div></li>
+        {% else %}
+          </li>
+        {% endif %}
+        <img class="buttons delete_event" value="{{event.id}}" src="{% static 'images/delete.svg' %}" alt="Удалить"></img>
         <a href="{% url 'cal:edit_event' event.id%}">Редактировать</a>
     </div>
     {% endfor %}
