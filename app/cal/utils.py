@@ -58,6 +58,7 @@ def get_month(year=now.year, month=now.month, navigate=None):
         'next_dates': next_dates,
         'current_month': c_month,
         'current_year': c_year,
+        'c_month_index': c_month_index,
         'now_day': now.day,
         'now_month': now_month,
         'now_year': now.year,

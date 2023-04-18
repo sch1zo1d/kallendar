@@ -19,10 +19,18 @@
 		<a class="calendar__cell__second prev">{{prev_month_date}}</a>
 	{% endfor %}
 	{% for now_month_date in now_dates %}
-		{% if now_month_date == now_day and current_year == now_year and current_month == now_month %}
-			<a class="calendar__cell current_day">{{now_month_date}}</a>
+		{% if now_month_date in special_dates %}
+			{% if now_month_date == now_day and current_year == now_year and current_month == now_month %}
+				<a class="calendar__cell current_day special_dates">{{now_month_date}}<span class="cal"></span></a>
+			{% else %}
+				<a class="calendar__cell special_dates">{{now_month_date}}<span class="cal"></span></a>
+			{% endif %}
 		{% else %}
-			<a class="calendar__cell">{{now_month_date}}</a>
+			{% if now_month_date == now_day and current_year == now_year and current_month == now_month %}
+				<a class="calendar__cell current_day">{{now_month_date}}</a>
+			{% else %}
+				<a class="calendar__cell">{{now_month_date}}</a>
+			{% endif %}
 		{% endif %}
 	{% endfor %}
 	{% for next_month_date in next_dates %}

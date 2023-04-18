@@ -25,16 +25,37 @@ def event_render_to_str(context):
     return context
 
 
+month_names = {'январь': '1', 'февраль': '2', 'март': '3', 'апрель': '4', 'май': '5', 'июнь': '6',
+               'июль': '7', 'август': '8', 'сентябрь': '9', 'октябрь': '10', 'ноябрь': '11', 'декабрь': '12'}
+
+
 @login_required(login_url='accounts/login/')
 def index(request, year=None, month=None):
     if request.method == "POST" and is_ajax(request):
+        nav = request.POST.get('nav')
+        if request.POST.get('nav') == 'index':
+            context = get_month(int(request.POST.get('current_year')), request.POST.get(
+                'current_month'))
+            special_dates(context)
+            context["html"] = render_to_string('cal/calendar.html', context)
+            return JsonResponse(context)
         context = get_month(int(request.POST.get('current_year')), request.POST.get(
-            'current_month'), request.POST.get('nav'))
+            'current_month'), nav)
+        special_dates(context)
         context["html"] = render_to_string('cal/calendar.html', context)
         return JsonResponse(context)
     context = get_month()
+    special_dates(context)
     context['today_events_list'] = Event.objects.order_by('-pub_date')
+    print(context)
     return render(request, 'cal/index.html', context)
+
+
+def special_dates(context):
+    special_dates = sorted([i.date.day for i in list(Event.objects.filter(date__year=context.get(
+        'current_year'), date__month=context.get('c_month_index')+1).order_by('-pub_date'))])
+    context["special_dates"] = special_dates
+    return context
 
 
 def delete_event(request):
@@ -45,33 +66,42 @@ def delete_event(request):
 
 def all_events(request):
     return JsonResponse(event_render_to_str({}))
+
+
 def today_event(request):
-    month_names = {'январь': '1', 'февраль': '2', 'март': '3', 'апрель': '4', 'май': '5', 'июнь': '6',
-                   'июль': '7', 'август': '8', 'сентябрь': '9', 'октябрь': '10', 'ноябрь': '11', 'декабрь': '12'}
     date_str = '-'.join([request.POST.get('current_year'),
                         month_names[request.POST.get('current_month')], request.POST.get('current_day')])
     date = datetime.strptime(date_str, '%Y-%m-%d')
-    e = Event.objects.filter(date=date).order_by('-pub_date')
-    context = {'today_events_list':Event.objects.filter(date=date).order_by('-pub_date'), 'current_date':date}
+    # e = Event.objects.filter(date=date).order_by('-pub_date')
+    context = {'today_events_list': Event.objects.filter(
+        date=date).order_by('-pub_date'), 'current_date': date}
     context["html"] = render_to_string('cal/events.html', context)
     context.pop('today_events_list')
     return JsonResponse(context)
     # return JsonResponse(event_render_to_str({}, get_list_or_404(Event, date=request.POST.get('date'))))
 
+
 def add_event(request):
+    d = datetime.strptime(request.POST.get('date'), '%Y-%m-%d')
     context = {
         'tittle': request.POST.get('tittle'),
         'notes': request.POST.get('notes'),
         'date': request.POST.get('date'),
         'time': request.POST.get('time'),
+        'current_date': d,
     }
+    
     if not context.get('time'):
         context['time'] = None
     # date = datetime.strptime(context.get('date'), '%-%m-%d')
     tom = Event(tittle=context.get('tittle'), notes=context.get(
         'notes'), date=context.get('date'), time=context.get('time'))
     tom.save()
-    return JsonResponse(event_render_to_str(context))
+    context['today_events_list'] = Event.objects.filter(
+        date=d).order_by('-pub_date')
+    context["html"] = render_to_string('cal/events.html', context)
+    context.pop('today_events_list')
+    return JsonResponse(context)
 
 
 def edit_event(request, event_id):
