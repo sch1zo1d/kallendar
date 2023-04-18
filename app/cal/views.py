@@ -67,6 +67,7 @@ def add_event(request):
     }
     if not context.get('time'):
         context['time'] = None
+    # date = datetime.strptime(context.get('date'), '%-%m-%d')
     tom = Event(tittle=context.get('tittle'), notes=context.get(
         'notes'), date=context.get('date'), time=context.get('time'))
     tom.save()
