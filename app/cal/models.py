@@ -1,12 +1,13 @@
 # from datetime import datetime, timedelta
-from django.conf import settings
+from django.contrib.auth.models import User
 # from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
 
-
 class Event(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     tittle = models.CharField(max_length=100,
                               blank=True,
                               null=True,
@@ -18,11 +19,13 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField(null=True)
 
-    # poop = models.BooleanField('Do you poop today?', default=False)
     pub_date = models.DateTimeField(
         'date published', auto_now=True)
     # def was_added_recently(self):
     #     return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+    class Meta:
+        ordering = ['date', 'time']
 
     def __str__(self):
         return self.tittle

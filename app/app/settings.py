@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'cal.apps.CalConfig',
     # 'cal'
 ]
@@ -133,7 +132,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = reverse_lazy("cal:index")
-LOGOUT_REDIRECT_URL = reverse_lazy("cal:accounts/login/")
+LOGOUT_REDIRECT_URL = reverse_lazy("cal:signup")
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (
 #         'rest_framework_simplejwt.authentication.JWTAuthentication',

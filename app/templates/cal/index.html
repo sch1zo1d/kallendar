@@ -6,6 +6,7 @@
 <script>
 var current_month = "{{current_month}}";
 var current_year = {{current_year}};
+var user_id = {{ request.user.id }};
 //var special_dates = {{special_dates}}
 //var current_day = {{current_day}}
 // AJAX CALENDAR
@@ -33,30 +34,7 @@ $(document).ready(function () {
          }
 		} 
 	});
-	function index(e) {
-		e.preventDefault();
-		$.ajax({
-			url: "{% url 'cal:index'%}",
-			dataType: 'json',
-			data:{
-				"current_month": current_month,
-				"current_year": current_year,
-				"nav": "index",
-			},
-			type: 'POST',
-			success: function(data) {
-				$('#calendar').html(data.html);
-				current_month = data.current_month;
-				current_year = data.current_year;
-				$(".prev").on('click', prev);
-				$(".next").on('click', next);
-				$(".calendar__cell").on('click', today_event);
-			},
-			error: function(er) {
-				console.log(er);
-			},
-		});
-	}
+
 	var prev = function (e) {
 		e.preventDefault();
 		var btn = $(this);

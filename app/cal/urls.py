@@ -6,7 +6,6 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LogoutView
 
 app_name = 'cal'
-
 urlpatterns = [
     path('', views.index, name='index'),
     # path('events', views.index, name='events'),

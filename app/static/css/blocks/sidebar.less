@@ -102,17 +102,18 @@
 }
 
 .sidebar__item {
-	display: block;
+	display: flex;
 	padding: 12px 24px;
-	color: @color__font__second;
+	color: rgba(red(@color__font), green(@color__font), blue(@color__font), .5);
 	font-size: 15px;
 	font-weight: 600;
 	text-decoration: none;
 	transition-duration: .25s;
+	align-items: center;
 }
 
 .sidebar__item:hover {
-	background-color: @color_font_second;
+	background-color: rgba(red(@color_font_second), green(@color_font_second), blue(@color_font_second), .7);
 	color: @color__font;
 }
 

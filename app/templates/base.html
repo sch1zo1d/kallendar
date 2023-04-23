@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-	{% comment %} <link rel="icon" type="image/png" href="{% static 'images/poop__icon.svg' %}" sizes="64x64" /> {% endcomment %}
+	<link rel="icon" type="image/png" href="{% static 'images/1.svg' %}" filter: brightness(50%); sizes="64x64" />
 	<title>Kallendar</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,12 +27,20 @@
 							<li><a class="sidebar__item" href="#">Статистика</a></li>
 							<li><a class="sidebar__item" href="#">Темы</a></li>
 							<li><a class="sidebar__item" href="#">Настройки</a></li>
+							<li><a class="sidebar__item" href="{% url "cal:logout" %}">
+									<img class="buttons noselect" style="margin-right: 7px" src="{% static 'images/logout.svg' %}" alt=""></img>
+									Выйти
+								</a></li>
 						</ul>
 					</div>
 					<a href="{% url 'cal:index' %}" class="header__inner__name noselect"> kallendar</a>
 				</div>
 				<div class="header__inner__right">
 					<img class="header__inner__icon noselect" src="{% static 'images/1.svg' %}" alt=""></img>
+					{% if user.is_staff %}
+						<a href="{% url "admin:index" %}">Админка</a>
+					{% endif %}
+					
 					{% comment %} <div class="settings">+</div>
 					<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button> {% endcomment %}
 				</div>
