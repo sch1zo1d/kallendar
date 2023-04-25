@@ -37,7 +37,7 @@ def index(request, year=None, month=None):
         if request.POST.get('nav') == 'index':
             context = get_month(int(request.POST.get('current_year')), request.POST.get(
                 'current_month'))
-            special_dates(context)
+            special_dates(context, user)
             context["html"] = render_to_string('cal/calendar.html', context)
             return JsonResponse(context)
         context = get_month(int(request.POST.get('current_year')), request.POST.get(
