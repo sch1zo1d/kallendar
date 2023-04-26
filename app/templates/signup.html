@@ -10,27 +10,28 @@
 	<title>Document</title>
 </head>
 <body>
-	{% if err %}
-		{{err}}
-	{% endif %}
-	<form method="post">
-		{% csrf_token %}
-		<h2 class="form__title">Регистрация</h2>
-		<input name="username" type="text" placeholder="Имя пользователя" class="input" />
-		<input name="email" type="email" placeholder="Email" class="input" />
-		<input name="password1" type="password" placeholder="Пароль" class="input" />
-		<input name="password2" type="password" placeholder="Подтвердите пароль" class="input" />
-		<button class="btn" type='submit' name="submit" value='sign_up'>Зарегистрироваться</button>
-	</form>
-	<form method="post">
-		{% csrf_token %}
-		<h2 class="form__title">Вход</h2>
-		<input name="username" type="text" placeholder="Имя" class="input" />
-		<input name="password1" type="password" placeholder="Пароль" class="input" />
-		<button class="btn" type='submit' name="submit" value='sign_in'>Войти</button> 
-		{% comment %} uevSMxO't0Mt {% endcomment %}
-	</form>
-	{% block javascript %}
+	<div class="signup_container">
+		{% if err %}
+			{{err}}
+		{% endif %}
+		<form method="post">
+			{% csrf_token %}
+			<h2 class="form__title">Регистрация</h2>
+			<input name="username" type="text" placeholder="Имя пользователя" class="input" />
+			<input name="email" type="email" placeholder="Email" class="input" />
+			<input name="password1" type="password" placeholder="Пароль" class="input" />
+			<input name="password2" type="password" placeholder="Подтвердите пароль" class="input" />
+			<button class="btn" type='submit' name="submit" value='sign_up'>Зарегистрироваться</button>
+		</form>
+		<form method="post">
+			{% csrf_token %}
+			<h2 class="form__title">Вход</h2>
+			<input name="username" type="text" placeholder="Имя" class="input" />
+			<input name="password1" type="password" placeholder="Пароль" class="input" />
+			<button class="btn" type='submit' name="submit" value='sign_in'>Войти</button> 
+		</form>
+	</div>
+	{% comment %} {% block javascript %}
 
     <script>
       $("#prev").click(function ()
@@ -66,7 +67,7 @@
         });
       });
     </script>
-    {% endblock javascript %}
+    {% endblock javascript %} {% endcomment %}
 </body>
 </html> 
 {% comment %}
@@ -91,7 +92,7 @@
 			<input name="username" type="text" placeholder="Имя" class="input" />
 			<input name="password1" type="password" placeholder="Пароль" class="input" />
 			<button class="btn" type='submit' name="submit" value='sign_in'>Войти</button> 
-			{% comment %} uevSMxO't0Mt 
+			{% comment %}
 		</form>
 	</div>
 	<div class="container__overlay">

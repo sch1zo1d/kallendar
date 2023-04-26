@@ -1,0 +1,21 @@
+// main: ../style.less
+input {
+	border-radius: 1rem;
+	border-color: @color__font__second;
+	font-family: @font-main;
+	color: @color__font;
+	height: 30px;
+	margin-bottom: 7px;
+	padding: 5px 15px;
+	width: 90%;
+}
+
+input::placeholder {
+	color: @color__font__second;
+}
+
+input:focus {
+	outline: none;
+	border-color: black;
+	transition: .45s;
+}

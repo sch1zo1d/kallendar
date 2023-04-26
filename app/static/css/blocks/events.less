@@ -57,6 +57,7 @@
 // }
 input {
 	border-radius: 1rem;
+	border-style: solid;
 	border-color: @color__font__second;
 	font-family: @font-main;
 	color: @color__font;
@@ -64,7 +65,15 @@ input {
 	margin-bottom: 7px;
 }
 // .input_hat
+input::placeholder {
+	color: @color__font__second;
+}
 
+input:focus {
+	outline: none;
+	border-color: black;
+	transition: .45s;
+}
 input[type="text"],
 input[type="date"], 
 input[type="time"] {

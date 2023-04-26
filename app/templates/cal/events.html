@@ -15,7 +15,7 @@
   {% if not current_date %}
   <input class='form_input' type="date" name="date" />
   {% else %}
-  <input type="hidden" name="date" value="{{current_date | date:"Y-m-d"}}"/>
+  <input type="hidden" name="date" value="{{current_date | date:"Y.m.d"}}"/>
   {% endif %}
   <input class='form_input' type="time" name="time" />
   <input type="hidden" name="nav" value="add"/>
@@ -41,7 +41,7 @@
         <div class="push"></div>
         <div class="event_date">
         {% if not current_date %}
-          <div>{{ event.date | date:"d-m-Y" }}</div>
+          <div>{{ event.date | date:"d.m.Y" }}</div>
         {% endif %}
         {% if event.time %}
           <div >{{ event.time | time:"H:i"}}</div></li>
