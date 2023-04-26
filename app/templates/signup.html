@@ -2,36 +2,60 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	 <link rel="stylesheet" href="{% static 'css/auth.css' %}" />
-	<title>Document</title>
-</head>
-<body>
-	<div class="signup_container">
-		{% if err %}
-			{{err}}
-		{% endif %}
-		<form method="post">
-			{% csrf_token %}
-			<h2 class="form__title">Регистрация</h2>
-			<input name="username" type="text" placeholder="Имя пользователя" class="input" />
-			<input name="email" type="email" placeholder="Email" class="input" />
-			<input name="password1" type="password" placeholder="Пароль" class="input" />
-			<input name="password2" type="password" placeholder="Подтвердите пароль" class="input" />
-			<button class="btn" type='submit' name="submit" value='sign_up'>Зарегистрироваться</button>
-		</form>
-		<form method="post">
-			{% csrf_token %}
-			<h2 class="form__title">Вход</h2>
-			<input name="username" type="text" placeholder="Имя" class="input" />
-			<input name="password1" type="password" placeholder="Пароль" class="input" />
-			<button class="btn" type='submit' name="submit" value='sign_in'>Войти</button> 
-		</form>
-	</div>
-	{% comment %} {% block javascript %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="center">
+      <div class="signup_container">
+        {% if err %} {{err}} {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <h2 class="form__title">Регистрация</h2>
+          <input
+            name="username"
+            type="text"
+            placeholder="Имя пользователя"
+            class="input"
+          />
+          <input name="email" type="email" placeholder="Email" class="input" />
+          <input
+            name="password1"
+            type="password"
+            placeholder="Пароль"
+            class="input"
+          />
+          <input
+            name="password2"
+            type="password"
+            placeholder="Подтвердите пароль"
+            class="input"
+          />
+          <button class="btn" type="submit" name="submit" value="sign_up">
+            Зарегистрироваться
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <h2 class="form__title">Вход</h2>
+          <input name="username" type="text" placeholder="Имя" class="input" />
+          <input
+            name="password1"
+            type="password"
+            placeholder="Пароль"
+            class="input"
+          />
+          <button class="btn" type="submit" name="submit" value="sign_in">
+            Войти
+          </button>
+        </form>
+      </div>
+    </div>
+    {% comment %} {% block javascript %}
 
     <script>
       $("#prev").click(function ()
@@ -68,147 +92,233 @@
       });
     </script>
     {% endblock javascript %} {% endcomment %}
-</body>
-</html> 
-{% comment %}
-{% load static %}
- <div class="container right-panel-active">
-	<!-- Sign Up -->
-		<div class="container__form container--signup">
-			<form method="post">
-				{% csrf_token %}
-				<h2 class="form__title">Регистрация</h2>
-				<input name="username" type="text" placeholder="Имя пользователя" class="input" />
-				<input name="email" type="email" placeholder="Email" class="input" />
-				<input name="password1" type="password" placeholder="Пароль" class="input" />
-				<input name="password2" type="password" placeholder="Подтвердите пароль" class="input" />
-				<button class="btn" type='submit' name="submit" value='sign_up'>Зарегистрироваться</button>
-			</form>
-		</div>
-	<div class="container__form container--signin">
-		<form method="post">
-			{% csrf_token %}
-			<h2 class="form__title">Вход</h2>
-			<input name="username" type="text" placeholder="Имя" class="input" />
-			<input name="password1" type="password" placeholder="Пароль" class="input" />
-			<button class="btn" type='submit' name="submit" value='sign_in'>Войти</button> 
-			{% comment %}
-		</form>
-	</div>
-	<div class="container__overlay">
-			<div class="overlay">
-				<div class="overlay__panel overlay--left">
-					<button class="btn" id="signIn">Sign In</button>
-				</div>
-				<div class="overlay__panel overlay--right">
-					<button class="btn" id="signUp">Sign Up</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script src="{% static 'js/auth.js' %}"></script>
+  </body>
+</html>
+{% comment %} {% load static %}
+<div class="container right-panel-active">
+  <!-- Sign Up -->
+  <div class="container__form container--signup">
+    <form method="post">
+      {% csrf_token %}
+      <h2 class="form__title">Регистрация</h2>
+      <input
+        name="username"
+        type="text"
+        placeholder="Имя пользователя"
+        class="input"
+      />
+      <input name="email" type="email" placeholder="Email" class="input" />
+      <input
+        name="password1"
+        type="password"
+        placeholder="Пароль"
+        class="input"
+      />
+      <input
+        name="password2"
+        type="password"
+        placeholder="Подтвердите пароль"
+        class="input"
+      />
+      <button class="btn" type="submit" name="submit" value="sign_up">
+        Зарегистрироваться
+      </button>
+    </form>
+  </div>
+  <div class="container__form container--signin">
+    <form method="post">
+      {% csrf_token %}
+      <h2 class="form__title">Вход</h2>
+      <input name="username" type="text" placeholder="Имя" class="input" />
+      <input
+        name="password1"
+        type="password"
+        placeholder="Пароль"
+        class="input"
+      />
+      <button class="btn" type="submit" name="submit" value="sign_in">
+        Войти
+      </button>
+      {% comment %}
+    </form>
+  </div>
+  <div class="container__overlay">
+    <div class="overlay">
+      <div class="overlay__panel overlay--left">
+        <button class="btn" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay__panel overlay--right">
+        <button class="btn" id="signUp">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/auth.js' %}"></script>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/auth.css' %}" />
-	<title>Document</title>
-</head>
-<body>
-	<div class="container right-panel-active">
-	<!-- Sign Up -->
-		<div class="container__form container--signup">
-			<form action="{% url 'cal:register' %}" method="post" class="form" id="form1">
-					{% csrf_token %}
-					<h2 class="form__title">Регистрация</h2>
-					<input name="username" type="text" placeholder="Имя" class="input" />
-					<input name="email" type="email" placeholder="Email" class="input" />
-					<input name="password1" type="password" placeholder="Пароль" class="input" />
-					<input name="password2" type="password" placeholder="Подтвердите пароль" class="input" />
-				<button class="btn" type='submit' name='submit' value='sign_up'>Зарегистрироваться</button>
-			</form>
-		</div>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container right-panel-active">
+      <!-- Sign Up -->
+      <div class="container__form container--signup">
+        <form
+          action="{% url 'cal:register' %}"
+          method="post"
+          class="form"
+          id="form1"
+        >
+          {% csrf_token %}
+          <h2 class="form__title">Регистрация</h2>
+          <input name="username" type="text" placeholder="Имя" class="input" />
+          <input name="email" type="email" placeholder="Email" class="input" />
+          <input
+            name="password1"
+            type="password"
+            placeholder="Пароль"
+            class="input"
+          />
+          <input
+            name="password2"
+            type="password"
+            placeholder="Подтвердите пароль"
+            class="input"
+          />
+          <button class="btn" type="submit" name="submit" value="sign_up">
+            Зарегистрироваться
+          </button>
+        </form>
+      </div>
 
-		<!-- Sign In -->
-		<div class="container__form container--signin">
-			<form action="{% url 'login' %}" method="post" class="form" id="form2">
-				{% csrf_token %}
-				<h2 class="form__title"> Войти </h2>
-				{{ form }}
-				<button class="btn" type='submit' name='submit' value='sign_in'>Войти</button>
-				{% comment %} <input name="username" type="username" placeholder="Имя пользователя" class="input"/>
-				<input name="password" type="password" placeholder="Пароль" class="input"/>
-				<a href="#" class="link">Forgot your password?</a> 
-			</form>
-		</div>
+      <!-- Sign In -->
+      <div class="container__form container--signin">
+        <form action="{% url 'login' %}" method="post" class="form" id="form2">
+          {% csrf_token %}
+          <h2 class="form__title">Войти</h2>
+          {{ form }}
+          <button class="btn" type="submit" name="submit" value="sign_in">
+            Войти
+          </button>
+          {% comment %}
+          <input
+            name="username"
+            type="username"
+            placeholder="Имя пользователя"
+            class="input"
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Пароль"
+            class="input"
+          />
+          <a href="#" class="link">Forgot your password?</a>
+        </form>
+      </div>
 
-		<!-- Overlay -->
-		<div class="container__overlay">
-			<div class="overlay">
-				<div class="overlay__panel overlay--left">
-					<button class="btn" id="signIn">Sign In</button>
-				</div>
-				<div class="overlay__panel overlay--right">
-					<button class="btn" id="signUp">Sign Up</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script src="{% static 'js/auth.js' %}"></script>
-</body>
+      <!-- Overlay -->
+      <div class="container__overlay">
+        <div class="overlay">
+          <div class="overlay__panel overlay--left">
+            <button class="btn" id="signIn">Sign In</button>
+          </div>
+          <div class="overlay__panel overlay--right">
+            <button class="btn" id="signUp">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/auth.js' %}"></script>
+  </body>
 </html>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/auth.css' %}" />
-	<title>Document</title>
-</head>
-<body>
-	<div class="container right-panel-active">
-	<!-- Sign Up -->
-		<div class="container__form container--signup">
-			<form action="{% url 'cal:register' %}" method="post" class="form" id="form1">
-					{% csrf_token %}
-					<h2 class="form__title">Регистрация</h2>
-					<input name="username" type="text" placeholder="Имя" class="input" />
-					<input name="email" type="email" placeholder="Email" class="input" />
-					<input name="password1" type="password" placeholder="Пароль" class="input" />
-					<input name="password2" type="password" placeholder="Подтвердите пароль" class="input" />
-				<button class="btn" type='submit' name='submit' value='sign_up'>Зарегистрироваться</button>
-			</form>
-		</div>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container right-panel-active">
+      <!-- Sign Up -->
+      <div class="container__form container--signup">
+        <form
+          action="{% url 'cal:register' %}"
+          method="post"
+          class="form"
+          id="form1"
+        >
+          {% csrf_token %}
+          <h2 class="form__title">Регистрация</h2>
+          <input name="username" type="text" placeholder="Имя" class="input" />
+          <input name="email" type="email" placeholder="Email" class="input" />
+          <input
+            name="password1"
+            type="password"
+            placeholder="Пароль"
+            class="input"
+          />
+          <input
+            name="password2"
+            type="password"
+            placeholder="Подтвердите пароль"
+            class="input"
+          />
+          <button class="btn" type="submit" name="submit" value="sign_up">
+            Зарегистрироваться
+          </button>
+        </form>
+      </div>
 
-		<!-- Sign In -->
-		<div class="container__form container--signin">
-			<form action="{% url 'cal:login' %}" method="post" class="form" id="form2">
-				{% csrf_token %}
-				{% comment %} {{ form }} 
-				<h2 class="form__title"> Войти </h2>
-				<input name="username" type="username" placeholder="Имя пользователя" class="input"/>
-				<input name="password" type="password" placeholder="Пароль" class="input"/>
-				<a href="#" class="link">Forgot your password?</a>
-				<button class="btn" type='submit' name='submit' value='sign_in'>Войти</button>
-			</form>
-		</div>
+      <!-- Sign In -->
+      <div class="container__form container--signin">
+        <form
+          action="{% url 'cal:login' %}"
+          method="post"
+          class="form"
+          id="form2"
+        >
+          {% csrf_token %} {% comment %} {{ form }}
+          <h2 class="form__title">Войти</h2>
+          <input
+            name="username"
+            type="username"
+            placeholder="Имя пользователя"
+            class="input"
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Пароль"
+            class="input"
+          />
+          <a href="#" class="link">Forgot your password?</a>
+          <button class="btn" type="submit" name="submit" value="sign_in">
+            Войти
+          </button>
+        </form>
+      </div>
 
-		<!-- Overlay -->
-		<div class="container__overlay">
-			<div class="overlay">
-				<div class="overlay__panel overlay--left">
-					<button class="btn" id="signIn">Sign In</button>
-				</div>
-				<div class="overlay__panel overlay--right">
-					<button class="btn" id="signUp">Sign Up</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script src="{% static 'js/auth.js' %}"></script>
-</body>
+      <!-- Overlay -->
+      <div class="container__overlay">
+        <div class="overlay">
+          <div class="overlay__panel overlay--left">
+            <button class="btn" id="signIn">Sign In</button>
+          </div>
+          <div class="overlay__panel overlay--right">
+            <button class="btn" id="signUp">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/auth.js' %}"></script>
+  </body>
 </html>
 {% endcomment %}
