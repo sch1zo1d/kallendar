@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http.response import JsonResponse
@@ -10,8 +10,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.template.loader import render_to_string
 from .models import Event
-from .utils import get_month
+from .utils import get_month, now_index
 from django.contrib.auth.decorators import login_required
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 
 def is_ajax(request):
@@ -34,12 +36,6 @@ def index(request, year=None, month=None):
     user = User.objects.get(pk=request.user.id)
     if request.method == "POST" and is_ajax(request):
         nav = request.POST.get('nav')
-        if request.POST.get('nav') == 'index':
-            context = get_month(int(request.POST.get('current_year')), request.POST.get(
-                'current_month'))
-            special_dates(context, user)
-            context["html"] = render_to_string('cal/calendar.html', context)
-            return JsonResponse(context)
         context = get_month(int(request.POST.get('current_year')), request.POST.get(
             'current_month'), nav)
         special_dates(context, user)
@@ -48,17 +44,50 @@ def index(request, year=None, month=None):
     context = get_month()
     special_dates(context, user)
     context['today_events_list'] = Event.objects.filter(user=user)
-    # print(context)
     return render(request, 'cal/index.html', context)
 
-
 def special_dates(context, user):
-    # print(Event.objects.filter(user=user),  Event.objects.filter(user=user) == None)
     if not Event.objects.filter(user=user):
         return
-    context["special_dates"] = sorted([i.date.day for i in list(Event.objects.filter(
-        date__year=context.get('current_year'), date__month=context.get('c_month_index')+1, user=user))])
+    current_year = context.get('current_year')
+    c_month_index = context.get('c_month_index')
+
+    current_month = datetime(current_year, c_month_index+1, 1)
+    previous_month = current_month.replace(day=1) - timedelta(days=4)
+    next_month = current_month.replace(day=28) + timedelta(days=4)
+
+    prev_special_dates = get_sorted_special_month_dates(previous_month, user)
+    now_special_dates = get_sorted_special_month_dates(current_month, user)
+    next_special_dates = get_sorted_special_month_dates(next_month, user)
+
+    context["prev_special_dates"] = get_current_special_dates(
+        context.get('prev_dates'), prev_special_dates)
+    context["special_dates"] = now_special_dates
+    context["next_special_dates"] = get_current_special_dates(
+        context.get('next_dates'), next_special_dates)
+    # get_other_special_dates(context.get('prev_dates'),
+    #                         context.get('next_dates'),
+    #                         )
+    # print(context.get('prev_dates'), context.get('next_dates'))
+    # [i.date.day for i in list(Event.objects.filter(
+    #     date__year=context.get('current_year'), date__month=context.get('c_month_index')+1, user=user))]
+    # context.get('prev_dates')
+    # print(context.get('current_year'), context.get('c_month_index')+1)
+
     return context
+
+
+def get_current_special_dates(dates, current_dates):
+    array = []
+    for i in dates:
+        if i in current_dates:
+            array.append(i)
+    return array
+
+
+def get_sorted_special_month_dates(date, user):
+    return sorted([i.date.day for i in list(Event.objects.filter(
+        date__year=date.year, date__month=date.month, user=user))])
 
 
 def delete_event(request):
@@ -119,9 +148,17 @@ def signup(request):
     if request.method == "POST":
         req = request.POST.get('submit')
         if req == 'sign_in':  # Вход
-            username = request.POST.get("username")
+            username_or_email = request.POST.get("username")
             password = request.POST.get("password1")
-            user = authenticate(username=username, password=password)
+            try:
+                validate_email(username_or_email)
+            except ValidationError:
+                user = authenticate(
+                    username=username_or_email, password=password)
+            else:
+                username_or_email = User.objects.get(email=username_or_email)
+                user = authenticate(
+                    username=username_or_email, password=password)
             if user is not None:
                 login(request, user)
                 return redirect("cal:index")
