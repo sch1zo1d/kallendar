@@ -132,7 +132,7 @@ $(document).ready(function () {
 			},
 		});
 	}
-// AJAX EVENTS
+
 	var add = function (e) {
 		e.preventDefault();
 		var btn = $(this);
@@ -216,13 +216,13 @@ $(document).ready(function () {
 			},
 		});
 	}
-	
 	$(".prev").on('click', prev);
 	$(".next").on('click', next);
 	$(".calendar__cell").on('click', today_event)
 	$(".all_events").on('click', all_events)
 	$("#add_form").on('submit', add);
 	$(".delete_event").on('click', del);
+	//$("#journal").on('click', graph);
 	//$('.header__inner__icon').on('click', poo)
 	
 	//$(".next").on('click', next);

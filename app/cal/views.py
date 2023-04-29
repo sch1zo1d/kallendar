@@ -46,6 +46,7 @@ def index(request, year=None, month=None):
     context['today_events_list'] = Event.objects.filter(user=user)
     return render(request, 'cal/index.html', context)
 
+
 def special_dates(context, user):
     if not Event.objects.filter(user=user):
         return
@@ -187,6 +188,8 @@ def validate_username(request):
     return JsonResponse(response)
 
 
+def journal(request):
+    return render(request, 'cal/journal.html')
 # def all_events(request):
 #     all_events = Event.objects.all()
 #     out = []

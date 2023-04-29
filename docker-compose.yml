@@ -24,11 +24,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=app_user
-      - POSTGRES_PASSWORD=uevSMxO't0Mt
-
+    env_file: .env
 
 volumes:
   pg_data: {}

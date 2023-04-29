@@ -25,7 +25,7 @@
 						<ul class="sidebar__box">
 							<li><a class="sidebar__item" href="/">Главная</a></li>
 							<li><a class="sidebar__item" href="#">Профиль</a></li>
-							<li><a class="sidebar__item" href="#">Журнал</a></li>
+							<li><a class="sidebar__item" href="{% url "cal:journal" %}">Журнал</a></li>
 							{% if user.is_staff %}
 								<li><a class="sidebar__item" href="{% url "admin:index" %}">Админка</a></li>
 							{% endif %}
