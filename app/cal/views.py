@@ -189,7 +189,10 @@ def validate_username(request):
 
 
 def journal(request):
-    return render(request, 'cal/journal.html')
+    context = {}
+    context["html"] = render_to_string('cal/graph.html', context)
+    return JsonResponse(context)
+
 # def all_events(request):
 #     all_events = Event.objects.all()
 #     out = []

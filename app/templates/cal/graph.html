@@ -1,41 +1,55 @@
 {% load static %}
-<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-base.min.js"></script>
+<script type="text/javascript">
+  // Load the Visualization API and the corechart package.
+  google.charts.load("current", { packages: ["corechart"] });
 
-<script>
-  anychart.onDocumentReady(function () {
-    // create a column chart
-    var chart = anychart.column();
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
 
-    // create a data series
-    var series = chart.column([
-      ["Virat Kohli", "296", "India"],
-      ["Max O'Dowd", "242", "Netherlands"],
-      ["Suryakumar Yadav", "239", "India"],
-      ["JD Butler", "225", "England"],
-      ["Kusal Mendis", "223", "Sri Lanka"],
-      ["Sikandar Raza", "219", "Zimbabwe"],
-      ["Pathum Nissanka", "214", "Sri Lanka"],
-      ["AD Hales", "212", "England"],
-      ["Lorkan Tucker", "204", "Ireland"],
-      ["Glenn Phillips", "201", "New Zealand"],
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart() {
+    // Create the data table.
+    var monthYearFormatter = new google.visualization.DateFormat({ 
+     pattern:'dd.MM.yyyy'
+    }); 
+    var data = new google.visualization.DataTable();
+    data.addColumn("date", "Дата");
+    data.addColumn("number", "Количество");
+    data.addRows([
+      [new Date(2023, 5, 1), 2],
+      [new Date(2023, 5, 2), 0],
+      [new Date(2023, 5, 3), 3],
+      [new Date(2023, 5, 4), 1],
+      [new Date(2023, 5, 5), 1],
+      [new Date(2023, 5, 6), 1],
+      [new Date(2023, 5, 7), 2],
     ]);
+    monthYearFormatter.format(data, 0);
 
-    // add axis titles
-    chart.xAxis().title("Дни");
-    chart.yAxis().title("Number of runs");
+    // Set chart options
+    var options = {
+      title: "How Much Pizza I Ate Last Night",
+      width: 433,
+      height: 357,
+      legend: "none",
+      hAxis: {
+            format: 'dd.MM.yyyy',
+            gridlines: {count: 15,
+              units: {
+                days: {format: ['MMM dd']},
+                }
+            }
+      },
 
-    // add a chart title
-    //chart.title("Top 10 Run Scorers at ICC Men's T20 World Cup 2022");
+    };
 
-    // set the container element
-    chart.container("container");
-
-    // display the chart
-    chart.draw();
-  });
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.ColumnChart(
+      document.getElementById("chart_div")
+    );
+    chart.draw(data, options);
+  }
 </script>
-
-<div
-  id="container"
-  style="width: 332.917px; height: 332.917px; margin: 0; padding: 0"
-></div>
+<div id="chart_div"></div>

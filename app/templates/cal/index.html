@@ -174,7 +174,30 @@ $(document).ready(function () {
 			},
 		});
 	}
-	
+	var index = function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: "{% url 'cal:index'%}",
+			dataType: 'json',
+			data:{
+				"current_month": current_month,
+				"current_year": current_year,
+				"nav": "index",
+			},
+			type: 'POST',
+			success: function(data) {
+				$('#calendar').html(data.html);
+				current_month = data.current_month;
+				current_year = data.current_year;
+				$(".prev").on('click', prev);
+				$(".next").on('click', next);
+				$(".calendar__cell").on('click', today_event);
+			},
+			error: function(er) {
+				console.log(er);
+			},
+		});
+	}
 	var del = function (e) {
 		e.preventDefault();
 		$.ajax({
@@ -186,30 +209,31 @@ $(document).ready(function () {
 			type: 'POST',
 			success: function(data) {
 				$('#events').html(data.html);
-				$.ajax({
-					url: "{% url 'cal:index'%}",
-					dataType: 'json',
-					data:{
-						"current_month": current_month,
-						"current_year": current_year,
-						"nav": "index",
-					},
-					type: 'POST',
-					success: function(data) {
-						$('#calendar').html(data.html);
-						current_month = data.current_month;
-						current_year = data.current_year;
-						$(".prev").on('click', prev);
-						$(".next").on('click', next);
-						$(".calendar__cell").on('click', today_event);
-					},
-					error: function(er) {
-						console.log(er);
-					},
-				});
 				//$('#events').html(data.html);
 				$("#add_form").on('submit', add);
 				$(".delete_event").on('click', del);
+			},
+			error: function(er) {
+				console.log(er);
+			},
+		}).then(index);
+	}
+
+	var journal = function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: "{% url 'cal:journal'%}",
+			dataType: 'json',
+			data: {
+				'user':'{{request.user}}',
+			},
+			//async: false,
+			type: 'POST',
+			success: function(data) {
+				$('#calendar').html(data.html);
+				//$('#events').html(data.html);
+				//$("#add_form").on('submit', add);
+				//$(".delete_event").on('click', del);
 			},
 			error: function(er) {
 				console.log(er);
@@ -222,7 +246,7 @@ $(document).ready(function () {
 	$(".all_events").on('click', all_events)
 	$("#add_form").on('submit', add);
 	$(".delete_event").on('click', del);
-	//$("#journal").on('click', graph);
+	$("#journal").on('click', journal);
 	//$('.header__inner__icon').on('click', poo)
 	
 	//$(".next").on('click', next);
@@ -251,88 +275,5 @@ $(document).ready(function () {
 	</div>
 </div>
 
-{% comment %} {% if latest_event_list %}
-<ul>
-  {% for event in latest_event_list %}
-  <li>
-    <a href="{% url 'cal:detail' event.id %}"
-      >{{ event.pub_date }}, {{ event.notes }}</a
-    >
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No events are available.</p>
-{% endif %}
-<form action="" method="post">
-  {% csrf_token %}
-  <input type="text" name="amount" />
-  <button type="submit">Рассчитать</button>
-</form> {% endcomment %}
 
-{% comment %} <script>
-$(document).ready(function () {
-  $("#prev").click(function (e) {
-    // Stop form from sending request to server
-    e.preventDefault();
-    var btn = $(this);
-    $.ajax({
-      url: "{% url 'cal:hello'%}",
-      type: 'get',
-      success: function(data) {
-        alert(data.res);
-      },
-      error: function(er) {
-        alert("ошибка");
-      },
-    });
-  });
-});
-</script> {% endcomment %}
-{% comment %} $("#prev").click(function () {
-    $.ajax({
-		url: "{% url 'cal:hello'%}",
-		type: 'get', // This is the default though, you don't actually need to always mention it
-		success: function(data) {
-			alert(data.res);
-		},
-		failure: function(data) { 
-			alert('Got an error dude');
-		}
-	}); 
-}) {% endcomment %}
-{% comment %} </script>
-$("#prev").click(function () {
-	// отслеживаем событие отправки формы
-	$("#id_username").keyup(function () {
-		// создаем AJAX-вызов
-		$.ajax({
-			data: $(this).serialize(), // получаяем данные формы
-			url: "{% url 'cal:validate_username' %}",
-			// если успешно, то
-			success: function (response) {
-				if (response.is_taken == true) {
-				$("#id_username")
-					.removeClass("is-valid")
-					.addClass("is-invalid");
-				$("#id_username").after(
-					'<div class="invalid-feedback d-block" id="usernameError">Это имя пользователя недоступно!</div>'
-				);
-				} else {
-				$("#id_username")
-					.removeClass("is-invalid")
-					.addClass("is-valid");
-				$("#usernameError").remove();
-				}
-			},
-			// если ошибка, то
-			error: function (response) {
-				// предупредим об ошибке
-				console.log(response.responseJSON.errors);
-				},
-		});
-		return false;
-	});
-	});
-</script> {% endcomment %}
 {% endblock %}
