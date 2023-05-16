@@ -13,16 +13,51 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Slab&display=swap" rel="stylesheet">
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
-	
+	<script>
+	$(document).ready(function () {
+		document.addEventListener('click', function() {
+			var target = event.target
+			if ((target.className != 'sidebar__btn') && (target.className != 'sidebar__span')) {
+				if ($("#sidebar__toggle").is(':checked')) {
+					if (target.className != 'sidebar__box') {
+						$('#sidebar__toggle').prop('checked', false);
+					}
+				}
+			}
+		});
+		document.querySelector('input').addEventListener('click', function(e) {
+  			e.stopPropagation();
+		});
+	});
+	{% comment %} $('.sidebar__btn').on('click', function() {
+			return
+	}); {% endcomment %}
+	{% comment %} $(document).ready(function () {
+		console.log($("#sidebar__toggle").checked)
+
+		{% comment %} $('#sidebar__box').click(function(event){
+			event.stopPropagation(); // prevents executing the above event
+		});
+		if $("#sidebar__toggle").checked {
+			document.body.addEventListener('click', () => {
+				var target = event.target;
+				console.log(target, target.className)
+				//if target.className
+			});
+		} {% endcomment %}
+	{% comment %} }) {% endcomment %}
+	</script>
 	<header class="header">
 		<div class="container">
 			<div class="header__inner">
 				<div class="header__inner__left">
 					<div class="hamburger-sidebar">
 						<input id="sidebar__toggle" type="checkbox" />
-						<label class="sidebar__btn" for="sidebar__toggle"><span></span></label>
+						<label class="sidebar__btn" for="sidebar__toggle"><span class='sidebar__span'></span></label>
 						<ul class="sidebar__box">
 							<li><a class="sidebar__item" href="/">Главная</a></li>
 							<li><a class="sidebar__item" href="#">Профиль</a></li>
@@ -51,6 +86,7 @@
 					<a href="{% url 'cal:index' %}" class="header__inner__name noselect">kallendar</a>
 				</div>
 				<div class="header__inner__right">
+					
 					<img class="header__inner__icon noselect" src="{% static 'images/1.svg' %}" alt=""></img>
 					{% comment %} <div class="settings">+</div>
 					<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button> {% endcomment %}
@@ -81,6 +117,7 @@
 	<div>
 		<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg">
 		<path class="cls-2" fill='#a2847b'; d="M20.42,36.89c-2.09,.02-4.01,.2-7.05,0-.95-.06-2.53-.2-3.52-1.26-.4-.43-.57-.87-.69-1.18-.04-.11-.72-2.01,.34-3.69,0,0,.31-.48,1.59-1.73,0,0-.25-.72-.3-.86-.29-.87,.02-1.87,.09-2.08,.53-1.63,2.06-2.48,2.41-2.67,.3-.17,1.28-.67,1.28-.67-.45-1.42-.46-1.61-.46-1.61-.08-.95,.47-2.15,1.42-2.59,.75-.35,1.93-.31,1.93-.31,0,0,9.32-.16,9.32-.16,0,0,.5-.46,.77-.43,.46,.05,1.05,1.52,.6,2.86-.45,1.32-1.89,2.43-1.89,2.43,0,0,1.9,.55,2.79,1.73,.73,.96,.7,2.22,.69,2.9,0,.44-.09,1.54-.09,1.54,0,0,.94,.74,1.16,.93,1.34,1.18,1.52,4.31-.09,5.69-.27,.23-.53,.36-.64,.41-2.55,1.2-5.83,.69-9.67,.73Z"/>
+		<text x="10" y="30" >10</text>
 		</svg>
 	</div>
 </body>

@@ -1,7 +1,6 @@
 {% extends 'base.html' %} 
 {% load static %}
 {% block content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{% static 'js/myajax.js' %}"></script>
 <script>
 var current_month = "{{current_month}}";
@@ -209,7 +208,6 @@ $(document).ready(function () {
 			type: 'POST',
 			success: function(data) {
 				$('#events').html(data.html);
-				//$('#events').html(data.html);
 				$("#add_form").on('submit', add);
 				$(".delete_event").on('click', del);
 			},
