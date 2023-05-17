@@ -18,7 +18,9 @@ urlpatterns = [
     path('event/all_events/', views.all_events, name='all_events'),
     path('edit/<int:event_id>/', views.edit_event, name='edit_event'),
     path('journal/', views.journal, name='journal'),
+    path('special/add', views.special_add, name='special_add')
 
+    
     # path('other_month', views.get_other_month, name="other_month")
     # path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     # path('register', RegisterView.as_view(), name='register'),

@@ -9,7 +9,7 @@ from .forms import RegisterForm, UserAuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.template.loader import render_to_string
-from .models import Event
+from .models import Event, SpecialEvent
 from .utils import get_month, now_index
 from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_email
@@ -192,6 +192,15 @@ def journal(request):
     context = {}
     context["html"] = render_to_string('cal/graph.html', context)
     return JsonResponse(context)
+
+
+# ----------------SPECIAL-------------------
+def special_add(request):
+    user = User.objects.get(pk=request.user.id)
+    tom = SpecialEvent(user=user)
+    tom.save()
+    return JsonResponse({'request': 200})
+
 
 # def all_events(request):
 #     all_events = Event.objects.all()

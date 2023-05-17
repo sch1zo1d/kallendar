@@ -238,6 +238,27 @@ $(document).ready(function () {
 			},
 		});
 	}
+	var add_special = function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: "{% url 'cal:special_add'%}",
+			dataType: 'json',
+			data: {
+				'user':'{{request.user}}',
+			},
+			//async: false,
+			type: 'POST',
+			success: function(data) {
+				$('#calendar').html(data.html);
+				//$('#events').html(data.html);
+				//$("#add_form").on('submit', add);
+				//$(".delete_event").on('click', del);
+			},
+			error: function(er) {
+				console.log(er);
+			},
+		});
+	}
 	$(".prev").on('click', prev);
 	$(".next").on('click', next);
 	$(".calendar__cell").on('click', today_event)
@@ -245,6 +266,7 @@ $(document).ready(function () {
 	$("#add_form").on('submit', add);
 	$(".delete_event").on('click', del);
 	$("#journal").on('click', journal);
+	$(".header__inner__btn__special").on('click', add_special);
 	//$('.header__inner__icon').on('click', poo)
 	
 	//$(".next").on('click', next);

@@ -5,6 +5,7 @@ from django.db import models
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
 
+
 class Event(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -29,6 +30,23 @@ class Event(models.Model):
 
     def __str__(self):
         return self.tittle
+
+
+class SpecialEvent(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    notes = models.CharField(max_length=1000,
+                             blank=True,
+                             null=True,
+                             default=None)
+    date = models.DateField(auto_now=True)
+    time = models.TimeField(auto_now=True)
+
+    pub_date = models.DateTimeField(
+        'date published', auto_now=True)
+
+    class Meta:
+        ordering = ['date', 'time']
+
 
 # class SpecialEvent(models.Model):
 #     date = models.DateField()
