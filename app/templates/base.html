@@ -9,10 +9,7 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link rel="icon" type="image/png" href="{% static 'images/1.svg' %}" filter: brightness(50%); sizes="64x64" />
 	<title>Kallendar</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Slab&display=swap" rel="stylesheet">
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	{% comment %} <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> {% endcomment %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
@@ -60,15 +57,20 @@
 						<label class="sidebar__btn" for="sidebar__toggle"><span class='sidebar__span'></span></label>
 						<ul class="sidebar__box">
 							<li><a class="sidebar__item" href="/">Главная</a></li>
+							<li><a class="sidebar__item" id="special">Special</a></li>
 							<li><a class="sidebar__item" href="#">Профиль</a></li>
 							<li><a class="sidebar__item" id="journal">Журнал</a></li>
 							{% if user.is_staff %}
 								<li><a class="sidebar__item" href="{% url "admin:index" %}">Админка</a></li>
 							{% endif %}
 							<li><a class="sidebar__item" href="{% url "cal:logout" %}">
-									<img class="buttons noselect" style="margin-right: 7px" src="{% static 'images/logout.svg' %}" alt=""></img>
-									Выйти
-								</a></li>
+								<svg class="buttons noselect" style="margin-right: 7px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M21 12L13 12" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+								Выйти
+							</a></li>
 							<a href="https://t.me/ka11endar" target="_blank" class="telegram">
 								<svg width="40px" height="40px" viewBox="0 0 32 32" fill="#a2847b" xmlns="http://www.w3.org/2000/svg">
 								<circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7225)"/>
@@ -86,9 +88,47 @@
 					<a href="{% url 'cal:index' %}" class="header__inner__name noselect">kallendar</a>
 				</div>
 				<div class="header__inner__right">
-					
-					<img class="header__inner__btn__special buttons noselect" src="{% static 'images/add_special.svg' %}" alt="Пук"></img>
-					<img class="header__inner__icon noselect" src="{% static 'images/1.svg' %}" alt=""></img>
+					<div class="header__inner__btn__special buttons noselect">
+						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40.8 43.5" style="enable-background:new 0 0 40.8 43.5;" xml:space="preserve">
+							<style type="text/css">
+								.st0{fill:#A2847B;}
+								.st1{fill:none;stroke:#A2847B;stroke-width:3;stroke-miterlimit:10;}
+							</style>
+							<path class="st0" d="M20.4,29.2c-1.6,0-3.2,0.2-5.5,0c-0.7,0-2-0.2-2.8-1c-0.3-0.3-0.4-0.7-0.5-0.9c0-0.1-0.6-1.6,0.3-2.9
+								c0,0,0.2-0.4,1.3-1.3c0,0-0.2-0.6-0.2-0.7c-0.2-0.7,0-1.5,0.1-1.6c0.4-1.3,1.6-1.9,1.9-2.1c0.2-0.1,1-0.5,1-0.5
+								c-0.4-1.1-0.4-1.2-0.4-1.2c-0.1-0.7,0.4-1.7,1.1-2c0.6-0.3,1.5-0.2,1.5-0.2l7.3-0.1c0,0,0.4-0.4,0.6-0.3c0.4,0,0.8,1.2,0.5,2.2
+								c-0.4,1-1.5,1.9-1.5,1.9s1.5,0.4,2.2,1.3c0.6,0.7,0.6,1.7,0.5,2.2c0,0.3-0.1,1.2-0.1,1.2s0.7,0.6,0.9,0.7c1.1,0.9,1.2,3.3-0.1,4.4
+								c-0.2,0.2-0.4,0.3-0.5,0.3C26,29.5,23.4,29.1,20.4,29.2L20.4,29.2z"/>
+							<circle class="st1" cx="20.4" cy="22.2" r="17.2"/>
+						</svg>
+
+					</div>
+					<div class="header__inner__icon noselect">
+						<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.79 43.56">
+						<defs>
+							<style>
+							.cls-1 {
+								fill: #a2847b;
+							}
+
+							.cls-2 {
+								fill: #f2e7d9;
+							}
+							</style>
+						</defs>
+						<rect class="cls-2" y="5.91" width="40.79" height="37.53" rx="3.89" ry="3.89"/>
+						<rect class="cls-2" x="6.48" width="9.45" height="13.09" rx="4.15" ry="4.15"/>
+						<rect class="cls-2" x="25.34" width="9.45" height="13.09" rx="4.15" ry="4.15"/>
+						<rect class="cls-1" x="4.82" y="16.6" width="32.26" height="21.45" rx="2.04" ry="2.04"/>
+						<rect class="cls-1" x="28.59" y="3.32" width="3.57" height="6.89" rx="1.11" ry="1.11"/>
+						<rect class="cls-1" x="9.57" y="3.32" width="3.57" height="6.89" rx="1.11" ry="1.11"/>
+						<path class="cls-2" d="M18.3,40.23c.29-.21,.66-.19,.85-.18,1.43,.06,6.69-.01,14-.14,.61-.34,1.59-1.02,1.97-2.13,.48-1.45-.32-2.87-.63-3.41-.62-1.1-1.21-1.27-1.46-2.33-.2-.82,.1-.92-.06-1.79-.04-.2-.32-1.64-1.61-2.68-1.31-1.06-2.42-.71-2.92-1.63-.37-.68,.18-.97-.12-2-.03-.09-.46-1.48-1.85-2.16-1.3-.63-2.26-.08-2.92-.79-.29-.31-.15-.47-.54-1.42,0,0-.32-.79-.84-1.58-1.06-1.63-3.67-3.14-4.29-2.68-.41,.3,.43,1.16,.36,3.21-.03,.74-.09,1.88-.89,2.32-.36,.19-.55,.08-1.31,.16-.48,.05-2.14,.23-2.98,1.16-.46,.51-.53,1.09-.66,2.05-.15,1.16,.11,1.55-.3,2.05-.34,.41-.69,.35-1.49,.79-.15,.09-1.21,.67-1.73,1.47-.83,1.27,.31,2.13-.36,3.53-.5,1.06-1.26,.8-2.11,1.96-.99,1.35-1.29,3.48-.15,4.73,.6,.66,1.38,.85,2.65,1.16,1.94,.47,4.84,.51,5.64,.36,.03,0,.08-.02,.13,0,.45,.15-.43,1.82,.27,2.67,.58,.71,2.26,.86,2.88,.29,.78-.72-.38-2.37,.48-2.97Z"/>
+						<g>
+							<path class="cls-1" d="M21.09,27.33c0,.38-.02,.73-.07,1.03-.87,.73-1.56,1.34-2.08,1.82,.5,.2,.9,.48,1.18,.85,.28,.37,.43,.78,.43,1.25,0,.54-.15,1.02-.46,1.42-.3,.4-.7,.7-1.19,.91-.49,.21-1.02,.31-1.58,.31-.67,0-1.3-.16-1.87-.47-.58-.31-1-.77-1.28-1.37,.18-.3,.41-.61,.7-.94,.72,.38,1.36,.56,1.91,.56,.3,0,.54-.06,.71-.17,.17-.11,.25-.25,.25-.41s-.08-.31-.25-.44c-.16-.13-.39-.22-.69-.27-.07-.2-.16-.55-.28-1.06-.03-.18-.06-.31-.08-.4-.02-.05-.02-.08-.02-.1,.12-.23,.31-.48,.56-.74,.26-.26,.54-.52,.86-.76-.8,.03-1.68,.1-2.64,.2-.12-.18-.21-.45-.28-.83s-.1-.74-.1-1.1c0-.2,.01-.36,.04-.49,.78-.1,1.72-.16,2.82-.16,1.26,0,2.37,.07,3.31,.22,.07,.3,.11,.66,.11,1.1Z"/>
+							<path class="cls-1" d="M25.62,26.13c.41,.07,.8,.17,1.16,.28,.36,.12,.61,.23,.73,.35-.47,2.41-.77,5.13-.89,8.16-.06,.02-.12,.02-.18,.02-.34,0-.83-.09-1.45-.27-.62-.18-1.02-.35-1.2-.52v-.46c0-1.46,.12-3.1,.36-4.92-.34,.34-.74,.66-1.2,.96-.24-.41-.54-1.05-.91-1.92,.5-.26,.94-.52,1.34-.8,.4-.28,.82-.61,1.26-.98,.24,0,.57,.02,.98,.1Z"/>
+						</g>
+						</svg>
+					</div>
 					{% comment %} <div class="settings">+</div>
 					<button onclick="location.href='{% url 'cal:logout' %}?next=/accounts/login/?next=/'"> Logout </button> {% endcomment %}
 				</div>
@@ -115,12 +155,6 @@
 		</defs>
 		</svg>
 	</a>
-	<div>
-		<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg">
-		<path class="cls-2" fill='#a2847b'; d="M20.42,36.89c-2.09,.02-4.01,.2-7.05,0-.95-.06-2.53-.2-3.52-1.26-.4-.43-.57-.87-.69-1.18-.04-.11-.72-2.01,.34-3.69,0,0,.31-.48,1.59-1.73,0,0-.25-.72-.3-.86-.29-.87,.02-1.87,.09-2.08,.53-1.63,2.06-2.48,2.41-2.67,.3-.17,1.28-.67,1.28-.67-.45-1.42-.46-1.61-.46-1.61-.08-.95,.47-2.15,1.42-2.59,.75-.35,1.93-.31,1.93-.31,0,0,9.32-.16,9.32-.16,0,0,.5-.46,.77-.43,.46,.05,1.05,1.52,.6,2.86-.45,1.32-1.89,2.43-1.89,2.43,0,0,1.9,.55,2.79,1.73,.73,.96,.7,2.22,.69,2.9,0,.44-.09,1.54-.09,1.54,0,0,.94,.74,1.16,.93,1.34,1.18,1.52,4.31-.09,5.69-.27,.23-.53,.36-.64,.41-2.55,1.2-5.83,.69-9.67,.73Z"/>
-		<text x="10" y="30" >10</text>
-		</svg>
-	</div>
 </body>
 </html>
 

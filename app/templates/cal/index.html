@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 {% load static %}
 {% block content %}
-<script src="{% static 'js/myajax.js' %}"></script>
+{% comment %} <script src="{% static 'js/myajax.js' %}"></script> {% endcomment %}
 <script>
 var current_month = "{{current_month}}";
 var current_year = {{current_year}};
@@ -104,7 +104,7 @@ $(document).ready(function () {
 				$(".calendar__cell").removeClass("current_click_day");
 				btn.addClass('current_click_day');
 				$('#events').html(data.html);
-				$("#add_form").on('submit', add);
+				$("#add_form_btn").on('click', add);
 				$(".delete_event").on('click', del);
 				$(".all_events").on('click', all_events);
 				
@@ -119,11 +119,11 @@ $(document).ready(function () {
 		$.ajax({
 			url: "{% url 'cal:all_events'%}",
 			type: 'POST',
-			data:{'success':200},
+			data: e.data,
 			success: function(data) {
 				$(".calendar__cell").removeClass("current_click_day");
 				$('#events').html(data.html);
-				$("#add_form").on('submit', add);
+				$("#add_form_btn").on('click', add);
 				$(".delete_event").on('click', del);
 			},
 			error: function(er) {
@@ -133,7 +133,7 @@ $(document).ready(function () {
 	}
 
 	var add = function (e) {
-		e.preventDefault();
+		//e.preventDefault();
 		var btn = $(this);
 		$.ajax({
 			url: "{% url 'cal:add_event'%}",
@@ -165,7 +165,7 @@ $(document).ready(function () {
 				});
 				$(".all_events").on('click', all_events)
 				document.querySelector('#add_form').reset()
-				$("#add_form").on('submit', add);
+				$("#add_form_btn").on('click', add);
 				$(".delete_event").on('click', del);
 			},
 			error: function(er) {
@@ -174,7 +174,7 @@ $(document).ready(function () {
 		});
 	}
 	var index = function (e) {
-		e.preventDefault();
+		//e.preventDefault();
 		$.ajax({
 			url: "{% url 'cal:index'%}",
 			dataType: 'json',
@@ -198,17 +198,18 @@ $(document).ready(function () {
 		});
 	}
 	var del = function (e) {
-		e.preventDefault();
+		//e.preventDefault();
 		$.ajax({
 			url: "{% url 'cal:delete_event'%}",
 			dataType: 'json',
 			data: {
 				'id':$(this).attr('value'),
-		},
+				'special': $("#special_ev").attr('value'),
+			},
 			type: 'POST',
 			success: function(data) {
 				$('#events').html(data.html);
-				$("#add_form").on('submit', add);
+				$("#add_form_btn").on('click', add);
 				$(".delete_event").on('click', del);
 			},
 			error: function(er) {
@@ -230,7 +231,6 @@ $(document).ready(function () {
 			success: function(data) {
 				$('#calendar').html(data.html);
 				//$('#events').html(data.html);
-				//$("#add_form").on('submit', add);
 				//$(".delete_event").on('click', del);
 			},
 			error: function(er) {
@@ -249,7 +249,7 @@ $(document).ready(function () {
 			//async: false,
 			type: 'POST',
 			success: function(data) {
-				$('#calendar').html(data.html);
+				//$('#calendar').html(data.html);
 				//$('#events').html(data.html);
 				//$("#add_form").on('submit', add);
 				//$(".delete_event").on('click', del);
@@ -259,13 +259,16 @@ $(document).ready(function () {
 			},
 		});
 	}
+	setTimeout(add_special, 420000);
+
 	$(".prev").on('click', prev);
 	$(".next").on('click', next);
 	$(".calendar__cell").on('click', today_event)
-	$(".all_events").on('click', all_events)
-	$("#add_form").on('submit', add);
+	$(".all_events").on('click', {}, all_events)
+	$("#add_form_btn").on('click', add);
 	$(".delete_event").on('click', del);
 	$("#journal").on('click', journal);
+	$("#special").on('click', {'special': true}, all_events);
 	$(".header__inner__btn__special").on('click', add_special);
 	//$('.header__inner__icon').on('click', poo)
 	

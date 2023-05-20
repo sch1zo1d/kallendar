@@ -1,7 +1,13 @@
 {% load static %}
 <div class="events_all_hat">
 {% if current_date %}
-  <img class="all_events buttons" src="{% static 'images/back.svg' %}"></a>
+  <div class="all_events buttons">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="Arrow / Caret_Circle_Left">
+      <path id="Vector" d="M13 15L10 12L13 9M21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12Z" stroke="#a2847b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </div>
   <div class="events_container ml1">СОБЫТИЯ НА {{current_date | date:"d-m-Y"}}</div>
 {% else %}
   <div class="events_container">ВСЕ СОБЫТИЯ</div>
@@ -9,7 +15,9 @@
 </div>
 <form id="add_form">
   <div class="input_hat">
+  {% if not special %}
   <input class='form_input' type="text" name="tittle" placeholder="Название задачи" />
+  {% endif %}
   <input class='form_input' type="text" name="notes" placeholder="Описание" />
   </div>
   {% if not current_date %}
@@ -20,7 +28,14 @@
   <input class='form_input' type="time" name="time" />
   <input type="hidden" name="nav" value="add"/>
   {% comment %} <img type='submit' class="buttons" src="{% static 'images/add.svg' %}" alt="Добавить"></img> {% endcomment %}
-  <input type="image" id="add_form" class="buttons" src="{% static 'images/add1.svg' %}"/>
+  <div id="add_form_btn" class="buttons noselect">
+    <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="Edit / Add_Plus_Circle">
+      <path id="Vector" d="M8 12H12M12 12H16M12 12V16M12 12V8M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#a2847b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <circle cx="150" cy="150" r="100" fill="none" stroke="black" />  
+    </svg>
+  </div>
 </form>
 {% comment %} {% if today_events_list %}
     {% for event in today_events_list %}
@@ -33,12 +48,28 @@
   <div>
     {% for event in today_events_list %}
     <div id="{{event.id}}" class="event_public">
-        <img class="buttons delete_event" value="{{event.id}}" src="{% static 'images/del.svg' %}" alt="Удалить"></img>
-        <div class="event_hat">
-        <div class="event_tittle">{{ event.tittle }}</div> 
-        <div class="event_notes">{{ event.notes }}</div>
+        <div class="buttons delete_event" value="{{event.id}}">
+          <svg class="delete_svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="Edit / Close_Circle">
+            <path id="Vector" d="M9 9L11.9999 11.9999M11.9999 11.9999L14.9999 14.9999M11.9999 11.9999L9 14.9999M11.9999 11.9999L14.9999 9M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#a2847b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
         </div>
-        <div class="push"></div>
+        <div class="event_hat">
+        {% if not special %}
+          <input type="hidden" id="special_ev" value='0'/>
+          <div class="event_tittle">{{ event.tittle }}</div> 
+          <div class="event_notes">{{ event.notes }}</div>
+        {% else %}
+          <input type="hidden" id="special_ev" value='1'/>
+          {% if event.notes != None %}
+            <div class="event_tittle">{{ event.notes }}</div>
+          {% endif %}
+        {% endif %}
+        </div>
+        {% if not special %}
+          <div class="push"></div>
+        {% endif %}
         <div class="event_date">
         {% if not current_date %}
           <div>{{ event.date | date:"d.m.Y" }}</div>

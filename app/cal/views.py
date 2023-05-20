@@ -20,8 +20,12 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-def event_render_to_str(context, user):
-    context['today_events_list'] = Event.objects.filter(user=user)
+def event_render_to_str(context, user, special=False):
+    if special:
+        context['today_events_list'] = SpecialEvent.objects.filter(user=user)
+        context['special'] = True
+    else:
+        context['today_events_list'] = Event.objects.filter(user=user)
     context["html"] = render_to_string('cal/events.html', context)
     context.pop('today_events_list')
     return context
@@ -91,17 +95,27 @@ def get_sorted_special_month_dates(date, user):
         date__year=date.year, date__month=date.month, user=user))])
 
 
-def delete_event(request):
+def delete_event(request, special=False):
     user = User.objects.get(pk=request.user.id)
-    event = get_object_or_404(Event, pk=request.POST.get('id'))
+    is_spec = is_special(request)
+    if is_spec:
+        event = get_object_or_404(SpecialEvent, pk=request.POST.get('id'))
+    else:
+        event = get_object_or_404(Event, pk=request.POST.get('id'))
     event.delete()
-    return JsonResponse(event_render_to_str({}, user))
+    return JsonResponse(event_render_to_str({}, user, is_spec))
 
 
 def all_events(request):
     user = User.objects.get(pk=request.user.id)
-    return JsonResponse(event_render_to_str({}, user))
+    return JsonResponse(event_render_to_str({}, user, is_special(request)))
 
+def is_special(req):
+    special = True
+    req_spec = req.POST.get('special')
+    if req_spec == None or req_spec == '0':
+        special = False
+    return special
 
 def today_event(request):
     user = User.objects.get(pk=request.user.id)
